@@ -11,36 +11,38 @@ import Office from "examples/Icons/Office";
 import Document from "examples/Icons/Document";
 import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
+import DocTables from "Kgcar/NewEntry";
+import DocSearchTables from "Kgcar/SearchStudents";
 
 
 const routes = [
-  { type: "title", title: "Profile", key: "account-pages" },
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    route: "/dashboard",
-    icon: <Office size="12px" />,
-    component: <Dashboard />,
-    noCollapse: true,
-  },
+  { type: "title", title: "Entry Portral", key: "account-pages" },
+  // {
+  //   type: "collapse",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   route: "/dashboard",
+  //   icon: <Office size="12px" />,
+  //   component: <CarDashboard />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "New Entry",
-    key: "tables",
-    route: "/tables",
+    key: "new-entry",
+    route: "/new-entry",
     icon: <Office size="12px" />,
-    component: <Tables />,
+    component: <DocTables />,
     noCollapse: true,
   },
-  { type: "title", title: "Entry Portal", key: "account-pages" },
+  { type: "title", title: "Portral Operations", key: "account-pages" },
   {
     type: "collapse",
     name: "Search Students",
-    key: "profile",
-    route: "/profile",
+    key: "search-students",
+    route: "/search-students",
     icon: <CustomerSupport size="12px" />,
-    component: <Profile />,
+    component: <DocSearchTables />,
     noCollapse: true,
   },
   {
