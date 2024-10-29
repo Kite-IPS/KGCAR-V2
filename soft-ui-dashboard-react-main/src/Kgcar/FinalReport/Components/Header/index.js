@@ -6,25 +6,21 @@ import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import DownloadIcon from "@mui/icons-material/Download";
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftAvatar from "components/SoftAvatar";
 
 // Soft UI Dashboard React examples
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
-// Soft UI Dashboard React icons
-import Cube from "examples/Icons/Cube";
-import Document from "examples/Icons/Document";
-import Settings from "examples/Icons/Settings";
 
 // Soft UI Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 
 function DocHeader() {
@@ -32,22 +28,14 @@ function DocHeader() {
   const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
-    // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
         : setTabsOrientation("horizontal");
     }
 
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
     window.addEventListener("resize", handleTabsOrientation);
-
-    // Call the handleTabsOrientation function to set the state with the initial value.
     handleTabsOrientation();
-
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
@@ -56,7 +44,7 @@ function DocHeader() {
   return (
     <SoftBox position="relative">
       <DashboardNavbar absolute light />
-      
+
       <SoftBox
         display="flex"
         alignItems="center"
@@ -88,13 +76,31 @@ function DocHeader() {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          {/* Title "SEARCH STUDENTS" on the left */}
+          {/* Title "FINAL REPORT" on the left */}
           <Grid item xs={6}>
             <SoftTypography variant="h4" fontWeight="bold">
               FINAL REPORT
             </SoftTypography>
           </Grid>
-          
+
+          {/* Download Button on the right */}
+          <Grid item xs={6} display="flex" justifyContent="flex-end">
+            <Tooltip title="Download Report" arrow>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DownloadIcon />}
+                sx={{
+                  padding: "0.5rem 1rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  color: "black", // Change this to any color you prefer
+                }}
+              >
+                Download
+              </Button>
+            </Tooltip>
+          </Grid>
         </Grid>
       </Card>
     </SoftBox>
