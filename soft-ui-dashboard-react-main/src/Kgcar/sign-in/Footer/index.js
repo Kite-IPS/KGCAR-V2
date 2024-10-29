@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
-function KgcarFooter() {
+function KgcarSigninFooter() {
   return (
     <SoftBox component="footer" py={6}>
         <Grid item xs={12} lg={8} sx={{ textAlign: "center" }}>
@@ -17,4 +17,4 @@ function KgcarFooter() {
   );
 }
 
-export default KgcarFooter;
+export default KgcarSigninFooter;

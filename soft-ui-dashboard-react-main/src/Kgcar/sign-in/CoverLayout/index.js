@@ -15,6 +15,7 @@ import PageLayout from "examples/LayoutContainers/PageLayout";
 // Authentication layout components
 import KgcarDefaultNavbar from "../DefaultNavbar";
 import KgcarFooter from "../Footer";
+import KgcarSigninFooter from "../Footer";
 
 function KgcarCoverLayout({ color, header, title, description, image, top, children }) {
   return (
@@ -81,7 +82,7 @@ function KgcarCoverLayout({ color, header, title, description, image, top, child
           </SoftBox>
         </Grid>
       </Grid>
-      <KgcarFooter />
+      <KgcarSigninFooter />
     </PageLayout>
   );
 }

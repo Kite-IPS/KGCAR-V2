@@ -17,6 +17,7 @@ import projectsTableData from "layouts/tables/data/projectsTableData";
 import Header from "layouts/profile/components/Header";
 import DocHeader from "./Components/Header";
 import DocSearchHeader from "./Components/Header";
+import KgcarFooter from "Kgcar/Footer";
 
 function DocSearchTables() {
   const { columns, rows } = authorsTableData;
@@ -47,7 +48,7 @@ function DocSearchTables() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <Footer />
+      <KgcarFooter />
     </DashboardLayout>
   );
 }
