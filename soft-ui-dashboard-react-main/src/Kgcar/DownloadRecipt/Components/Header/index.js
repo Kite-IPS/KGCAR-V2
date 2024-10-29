@@ -82,7 +82,7 @@ function DocSearchHeader() {
           {/* Title "SEARCH STUDENTS" on the left */}
           <Grid item xs={6}>
             <SoftTypography variant="h4" fontWeight="bold">
-              SEARCH STUDENTS
+              DOWNLOAD RECEIPT
             </SoftTypography>
           </Grid>
 
