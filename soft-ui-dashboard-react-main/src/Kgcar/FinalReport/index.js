@@ -14,6 +14,7 @@ import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import DocHeader from "./Components/Header";
 import KgcarFooter from "Kgcar/Footer";
+import Table from "examples/Tables/Table";
 
 function KgcarFinalTables() {
   const { columns, rows } = authorsTableData;
@@ -24,7 +25,7 @@ function KgcarFinalTables() {
       <DashboardNavbar />
       <DocHeader />
       <SoftBox py={3}></SoftBox>
-      {/* <SoftBox py={3}>
+      <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
@@ -44,7 +45,7 @@ function KgcarFinalTables() {
             </SoftBox>
           </Card>
         </SoftBox>
-      </SoftBox> */}
+      </SoftBox>
       <KgcarFooter />
     </DashboardLayout>
   );
