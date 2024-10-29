@@ -13,6 +13,7 @@ import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import DocTables from "Kgcar/NewEntry";
 import DocSearchTables from "Kgcar/SearchStudents";
+import KgcarSignIn from "Kgcar/sign-in";
 
 
 const routes = [
@@ -67,7 +68,7 @@ const routes = [
     name: "Login",
     key: "login",
     route: "/login",
-    component: <SignIn />,
+    component: <KgcarSignIn />,
   }
 ];
 
