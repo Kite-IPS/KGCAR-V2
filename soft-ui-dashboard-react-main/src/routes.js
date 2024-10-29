@@ -48,21 +48,27 @@ const routes = [
   {
     type: "collapse",
     name: "Download Recipt",
-    key: "sign-in",
-    route: "/authentication/sign-in",
+    key: "download-recipt",
+    route: "/download-recipt",
     icon: <Document size="12px" />,
-    component: <SignIn />,
+    component: <DocSearchTables />,
     noCollapse: true,
   },
   {
     type: "collapse",
     name: "Final Report",
-    key: "sign-up",
-    route: "/authentication/sign-up",
+    key: "final-report",
+    route: "/final-report",
     icon: <SpaceShip size="12px" />,
-    component: <SignUp />,
+    component: <DocTables />,
     noCollapse: true,
   },
+  {
+    name: "Login",
+    key: "login",
+    route: "/login",
+    component: <SignIn />,
+  }
 ];
 
 export default routes;
