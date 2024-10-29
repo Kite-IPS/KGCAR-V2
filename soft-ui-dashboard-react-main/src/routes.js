@@ -14,6 +14,8 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import DocTables from "Kgcar/NewEntry";
 import DocSearchTables from "Kgcar/SearchStudents";
 import KgcarSignIn from "Kgcar/sign-in";
+import KgcarDownloadTables from "Kgcar/DownloadRecipt";
+import KgcarFinalTables from "Kgcar/FinalReport";
 
 
 const routes = [
@@ -52,7 +54,7 @@ const routes = [
     key: "download-recipt",
     route: "/download-recipt",
     icon: <Document size="12px" />,
-    component: <DocSearchTables />,
+    component: <KgcarDownloadTables />,
     noCollapse: true,
   },
   {
@@ -61,7 +63,7 @@ const routes = [
     key: "final-report",
     route: "/final-report",
     icon: <SpaceShip size="12px" />,
-    component: <DocTables />,
+    component: <KgcarFinalTables />,
     noCollapse: true,
   },
   {
