@@ -88,14 +88,11 @@ function DocHeader() {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
-            <SoftAvatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
-            />
+          {/* Title "SEARCH STUDENTS" on the left */}
+          <Grid item xs={6}>
+            <SoftTypography variant="h4" fontWeight="bold">
+              FINAL REPORT
+            </SoftTypography>
           </Grid>
           
         </Grid>
