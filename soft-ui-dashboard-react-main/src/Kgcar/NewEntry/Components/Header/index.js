@@ -1,72 +1,110 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
-
-// @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import SoftTypography from "components/SoftTypography";
-import SoftAvatar from "components/SoftAvatar";
-
-// Soft UI Dashboard React examples
+import SoftBox from "components/SoftBox";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-
-// Soft UI Dashboard React icons
-import Cube from "examples/Icons/Cube";
-import Document from "examples/Icons/Document";
-import Settings from "examples/Icons/Settings";
-
-// Soft UI Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
-
-// Images
-import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 
 function DocHeader() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [tabValue, setTabValue] = useState(0);
+  const [dropdown1, setDropdown1] = useState("");
+  const [dropdown2, setDropdown2] = useState("");
+  const [inputFields, setInputFields] = useState({
+    textField1: "", // stdname
+    textField2: "", // admno
+    textField3: "", // parentname
+    textField4: "", // stdno
+    textField5: "", // parentno
+    textField6: "", // email
+  });
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageColor, setMessageColor] = useState("error");
 
   useEffect(() => {
-    // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
         : setTabsOrientation("horizontal");
     }
-
-    /** 
-     The event listener that's calling the handleTabsOrientation function when resizing the window.
-    */
     window.addEventListener("resize", handleTabsOrientation);
-
-    // Call the handleTabsOrientation function to set the state with the initial value.
     handleTabsOrientation();
-
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const handleInputChange = (event) => {
+    setInputFields({
+      ...inputFields,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    // Reset input fields immediately on submit
+    setInputFields({
+      textField1: "", // stdname
+      textField2: "", // admno
+      textField3: "", // parentname
+      textField4: "", // stdno
+      textField5: "", // parentno
+      textField6: "", // email
+    });
+    setDropdown1(""); // Reset dropdown 1
+    setDropdown2(""); // Reset dropdown 2
+
+    const allFieldsFilled = Object.values(inputFields).every(field => field) && dropdown1 && dropdown2;
+
+    if (!allFieldsFilled) {
+      setMessage("Please fill all fields.");
+      setMessageColor("error");
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 3000);
+      return; // Stop the function if fields are not filled
+    }
+
+    const data = {
+      stdname: inputFields.textField1,
+      admno: inputFields.textField2,
+      parentname: inputFields.textField3,
+      dept: dropdown1,
+      stdno: inputFields.textField4,
+      parentno: inputFields.textField5,
+      email: inputFields.textField6,
+      quote: dropdown2,
+    };
+
+    try {
+      const response = await fetch("https://your-backend-api.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setMessage("Student added successfully!"); // Success message
+        setMessageColor("success");
+      } else {
+        setMessage("Student is not added."); // Error message
+        setMessageColor("error");
+      }
+    } catch (error) {
+      setMessage("Student is not added."); // Error message in case of network issues
+      setMessageColor("error");
+    }
+
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 3000);
+  };
 
   return (
     <SoftBox position="relative">
@@ -102,18 +140,134 @@ function DocHeader() {
           px: 2,
         }}
       >
-        <Grid container spacing={3} alignItems="center">
-          <Grid item>
-            <SoftAvatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
+        <Grid container spacing={3}>
+          {/* First Row: 3 Text Fields + 1 Dropdown */}
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Student Name</SoftTypography>
+            <TextField
+              name="textField1"
+              variant="outlined"
+              fullWidth
+              value={inputFields.textField1}
+              onChange={handleInputChange}
             />
           </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Admission No</SoftTypography>
+            <TextField
+              name="textField2"
+              variant="outlined"
+              fullWidth
+              value={inputFields.textField2}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Parent Name</SoftTypography>
+            <TextField
+              name="textField3"
+              variant="outlined"
+              fullWidth
+              value={inputFields.textField3}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Department</SoftTypography>
+            <Select
+              value={dropdown1}
+              onChange={(e) => setDropdown1(e.target.value)}
+              displayEmpty
+              variant="outlined"
+              fullWidth
+            >
+              <MenuItem value="" disabled>Select an option</MenuItem>
+              <MenuItem value="CSE">CSE</MenuItem>
+              <MenuItem value="AIDS">AI & DS</MenuItem>
+              <MenuItem value="IT">IT</MenuItem>
+              <MenuItem value="ECE">ECE</MenuItem>
+              <MenuItem value="CSBS">CSBS</MenuItem>
+              <MenuItem value="MECH">MECH</MenuItem>
+              <MenuItem value="CYS">CYS</MenuItem>
+              <MenuItem value="AIML">AI & ML</MenuItem>
+              <MenuItem value="MBA">MBA</MenuItem>
+            </Select>
+          </Grid>
+
+          {/* Second Row: 3 Text Fields + 1 Dropdown */}
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Student No</SoftTypography>
+            <TextField
+              name="textField4"
+              variant="outlined"
+              fullWidth
+              value={inputFields.textField4}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Parent No</SoftTypography>
+            <TextField
+              name="textField5"
+              variant="outlined"
+              fullWidth
+              value={inputFields.textField5}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Email</SoftTypography>
+            <TextField
+              name="textField6"
+              variant="outlined"
+              fullWidth
+              value={inputFields.textField6}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <SoftTypography variant="body2" sx={{ mb: 1 }}>Quote</SoftTypography>
+            <Select
+              value={dropdown2}
+              onChange={(e) => setDropdown2(e.target.value)}
+              displayEmpty
+              variant="outlined"
+              fullWidth
+            >
+              <MenuItem value="" disabled>Select an option</MenuItem>
+              <MenuItem value="management">management Quote</MenuItem>
+              <MenuItem value="government">Government Quote</MenuItem>
+            </Select>
+          </Grid>
           
+          {/* Submit Button */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleSubmit}
+              sx={{ mt: 2 }}
+            >
+              Submit
+            </Button>
+          </Grid>
         </Grid>
+
+        {/* Success/Error Snackbar */}
+        <Snackbar
+          open={showMessage}
+          onClose={() => setShowMessage(false)}
+          sx={{
+            position: "absolute",
+            top: "4vh",
+            right: "4vw",
+            transition: "ease-in-out",
+          }}
+        >
+          <Alert severity={messageColor === "error" ? "error" : "success"} sx={{ backgroundColor: messageColor === "error" ? "red" : "green", color: "white" }}>
+            {message}
+          </Alert>
+        </Snackbar>
       </Card>
     </SoftBox>
   );

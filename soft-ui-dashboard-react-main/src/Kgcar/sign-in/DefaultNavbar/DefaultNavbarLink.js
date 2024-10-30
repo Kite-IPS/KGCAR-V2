@@ -31,6 +31,7 @@ function KgcarDefaultNavbarLink({ icon, name, route, light }) {
         {icon}
       </Icon>
       <SoftTypography
+        borderRadius="7px"
         variant="button"
         fontWeight="regular"
         color={light ? "white" : "dark"}

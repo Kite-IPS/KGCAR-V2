@@ -21,6 +21,7 @@ function KgcarCoverLayout({ color, header, title, description, image, top, child
   return (
     <PageLayout background="white">
       <KgcarDefaultNavbar
+        
         action={{
           type: "external",
           route: "https://smartside.in",

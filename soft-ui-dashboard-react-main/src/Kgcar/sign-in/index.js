@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 // @mui material components
-import Switch from "@mui/material/Switch";
+// import Switch from "@mui/material/Switch";
 
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
