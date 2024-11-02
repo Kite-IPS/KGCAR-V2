@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-Coded by www.creative-tim.com
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useMemo } from "react";
-import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useState } from "react";
 import { Table as MuiTable } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
@@ -20,98 +7,100 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton"; // Make sure to have a SoftButton component
 
-// Assuming this is your table data file
-import tableData from "Kgcar/SearchStudents/data/tableData"; // Update the path accordingly
-
 function Table() {
-  const { columns, rows } = tableData;
+  const [students, setStudents] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const renderColumns = columns.map(({ name, align }, key) => {
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/"); // Replace with your backend API URL
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setStudents(data.slice(0, 7)); // Get last 7 students
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  // Render loading state
+  if (loading) return <SoftTypography align="center">Loading...</SoftTypography>;
+
+  // Render error state or no data
+  if (error || students.length === 0) {
     return (
-      <SoftBox
-        key={name}
-        component="th"
-        pt={1.5}
-        pb={1.25}
-        pl={align === "left" ? 3 : 1}
-        pr={align === "right" ? 1 : 3}
-        textAlign={align}
-        fontSize="0.875rem"
-        fontWeight="bold"
-        color="secondary"
-        opacity={0.7}
-      >
-        {name.toUpperCase()}
+      <SoftBox textAlign="center" mt={5}>
+        <SoftTypography>No student has been added</SoftTypography>
       </SoftBox>
     );
-  });
+  }
 
-  const renderRows = rows.map((row, key) => {
-    const rowKey = `row-${key}`;
-    const tableRow = columns.map(({ name, align }) => {
-      let cellContent;
-      if (name === "action") {
-        cellContent = (
-          <SoftButton
-            variant="text"
-            color="primary"
-            onClick={() => console.log(`Editing ${row.student}`)} // Implement your edit logic
-          >
-            Edit
-          </SoftButton>
-        );
-      } else {
-        cellContent = (
-          <SoftTypography
-            variant="button"
-            fontWeight="regular"
-            color="secondary"
-          >
-            {row[name]}
-          </SoftTypography>
-        );
-      }
+  const columns = [
+    { name: "student name", align: "left" },
+    { name: "admission no", align: "center" },
+    { name: "department", align: "center" },
+    { name: "action", align: "center" },
+  ];
 
-      return (
-        <SoftBox
-          key={uuidv4()}
-          component="td"
-          p={1}
-          textAlign={align}
-        >
-          {cellContent}
+  const renderColumns = columns.map(({ name, align }) => (
+    <SoftBox
+      key={name}
+      component="th"
+      pt={1.5}
+      pb={1.25}
+      pl={align === "left" ? 3 : 1}
+      pr={align === "right" ? 1 : 3}
+      textAlign={align}
+      fontSize="0.875rem"
+      fontWeight="bold"
+      color="secondary"
+      opacity={0.7}
+    >
+      {name.toUpperCase()}
+    </SoftBox>
+  ));
+
+  const renderRows = students.map((student, key) => (
+    <TableRow key={key}>
+      <SoftBox component="td" p={1} textAlign="left">
+        <SoftTypography variant="button" fontWeight="regular" color="secondary">
+          {student.name} {/* Adjust according to your student object structure */}
+        </SoftTypography>
+      </SoftBox>
+      <SoftBox component="td" p={1} textAlign="center">
+        <SoftTypography variant="caption" color="secondary">
+          {student.admissionNo} {/* Adjust accordingly */}
+        </SoftTypography>
+      </SoftBox>
+      <SoftBox component="td" p={1} textAlign="center">
+        <SoftTypography variant="caption" color="secondary">
+          {student.department} {/* Adjust accordingly */}
+        </SoftTypography>
+      </SoftBox>
+      <SoftBox component="td" p={1} textAlign="center">
+        <SoftButton variant="text" color="primary" onClick={() => console.log(`Editing ${student.name}`)}>
+          Edit
+        </SoftButton>
+      </SoftBox>
+    </TableRow>
+  ));
+
+  return (
+    <TableContainer>
+      <MuiTable>
+        <SoftBox component="thead">
+          <TableRow>{renderColumns}</TableRow>
         </SoftBox>
-      );
-    });
-
-    return <TableRow key={rowKey}>{tableRow}</TableRow>;
-  });
-
-  return useMemo(
-    () => (
-      <TableContainer>
-        <MuiTable>
-          <SoftBox component="thead">
-            <TableRow>{renderColumns}</TableRow>
-          </SoftBox>
-          <TableBody>{renderRows}</TableBody>
-        </MuiTable>
-      </TableContainer>
-    ),
-    [columns, rows]
+        <TableBody>{renderRows}</TableBody>
+      </MuiTable>
+    </TableContainer>
   );
 }
-
-// Setting default values for the props of Table
-Table.defaultProps = {
-  columns: [],
-  rows: [{}],
-};
-
-// Typechecking props for the Table
-Table.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.object),
-  rows: PropTypes.arrayOf(PropTypes.object),
-};
 
 export default Table;
