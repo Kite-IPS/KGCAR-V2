@@ -82,7 +82,7 @@ function DocHeader() {
     };
 
     try {
-      const response = await fetch("https://your-backend-api.com/submit", {
+      const response = await fetch("http://localhost:8000/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
