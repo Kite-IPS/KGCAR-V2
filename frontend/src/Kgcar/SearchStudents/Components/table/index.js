@@ -15,11 +15,19 @@ function Table() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/"); // Replace with your backend API URL
+        const response = await fetch("http://127.0.0.1:8000/student-info/", {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("admin:admin"), // Replace with actual credentials
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        setStudents(data.slice(0, 7)); // Get last 7 students
+        console.log(data);
+        setStudents(data.slice(-7)); // Get last 7 students
       } catch (err) {
+        console.error("Error fetching students:", err); // Logs the error for debugging
         setError(true);
       } finally {
         setLoading(false);
@@ -42,10 +50,10 @@ function Table() {
   }
 
   const columns = [
-    { name: "student name", align: "left" },
-    { name: "admission no", align: "center" },
-    { name: "department", align: "center" },
-    { name: "action", align: "center" },
+    { name: "Student Name", align: "left" },
+    { name: "Admission No", align: "center" },
+    { name: "Department", align: "center" },
+    { name: "Action", align: "center" },
   ];
 
   const renderColumns = columns.map(({ name, align }) => (
@@ -75,7 +83,7 @@ function Table() {
       </SoftBox>
       <SoftBox component="td" p={1} textAlign="center">
         <SoftTypography variant="caption" color="secondary">
-          {student.admissionNo} {/* Adjust accordingly */}
+          {student.admission_no} {/* Adjust accordingly */}
         </SoftTypography>
       </SoftBox>
       <SoftBox component="td" p={1} textAlign="center">
