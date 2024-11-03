@@ -50,26 +50,26 @@ function DocHeader() {
   const handleSubmit = async () => {
     // Reset input fields immediately on submit
     setInputFields({
-      textField1: "", // stdname
-      textField2: "", // admno
-      textField3: "", // parentname
-      textField4: "", // stdno
-      textField5: "", // parentno
-      textField6: "", // email
+      textField1: "",
+      textField2: "",
+      textField3: "",
+      textField4: "",
+      textField5: "",
+      textField6: "",
     });
-    setDropdown1(""); // Reset dropdown 1
-    setDropdown2(""); // Reset dropdown 2
-
+    setDropdown1("");
+    setDropdown2("");
+  
     const allFieldsFilled = Object.values(inputFields).every(field => field) && dropdown1 && dropdown2;
-
+  
     if (!allFieldsFilled) {
       setMessage("Please fill all fields.");
       setMessageColor("error");
       setShowMessage(true);
       setTimeout(() => setShowMessage(false), 3000);
-      return; // Stop the function if fields are not filled
+      return;
     }
-
+  
     const data = {
       stdname: inputFields.textField1,
       admno: inputFields.textField2,
@@ -80,16 +80,16 @@ function DocHeader() {
       email: inputFields.textField6,
       quote: dropdown2,
     };
-
+  
     try {
-      const response = await fetch("https://your-backend-api.com/submit", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/add/`, {  // Use environment variable here
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         setMessage("Student added successfully!"); // Success message
         setMessageColor("success");
@@ -101,11 +101,10 @@ function DocHeader() {
       setMessage("Student is not added."); // Error message in case of network issues
       setMessageColor("error");
     }
-
+  
     setShowMessage(true);
     setTimeout(() => setShowMessage(false), 3000);
   };
-
   return (
     <SoftBox position="relative">
       <DashboardNavbar absolute light />
