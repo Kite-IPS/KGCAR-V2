@@ -48,6 +48,9 @@ function DocHeader() {
   };
 
   const handleSubmit = async () => {
+    const username = "admin"; // Replace with actual username
+    const password = "admin"; // Replace with actual password
+    const credentials = btoa(`${username}:${password}`); // Base64 encoding
     // Reset input fields immediately on submit
     setInputFields({
       textField1: "",
@@ -59,9 +62,9 @@ function DocHeader() {
     });
     setDropdown1("");
     setDropdown2("");
-  
+
     const allFieldsFilled = Object.values(inputFields).every(field => field) && dropdown1 && dropdown2;
-  
+
     if (!allFieldsFilled) {
       setMessage("Please fill all fields.");
       setMessageColor("error");
@@ -69,7 +72,7 @@ function DocHeader() {
       setTimeout(() => setShowMessage(false), 3000);
       return;
     }
-  
+
     const data = {
       name_std: inputFields.textField1,
       admno: inputFields.textField2,
@@ -81,27 +84,31 @@ function DocHeader() {
       quote: Number(dropdown2),
     };
     console.log(data);
+    console.log(credentials);
     try {
-      const response = await fetch("http://127.0.0.1:8000/add/", {
+        const response = await fetch("http://127.0.0.1:8000/add/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Basic ${credentials}`,
         },
         body: JSON.stringify(data),
       });
-  
+
       if (response.ok) {
         setMessage("Student added successfully!"); // Success message
         setMessageColor("success");
       } else {
         setMessage("Student is not added."); // Error message
         setMessageColor("error");
+        
       }
     } catch (error) {
       setMessage("Student is not added."); // Error message in case of network issues
       setMessageColor("error");
+      console.error("Error adding student:", error);
     }
-  
+
     setShowMessage(true);
     setTimeout(() => setShowMessage(false), 3000);
   };
