@@ -71,19 +71,19 @@ function DocHeader() {
     }
 
     const data = {
-      stdname: inputFields.textField1,
+      name_std: inputFields.textField1,
       admno: inputFields.textField2,
-      parentname: inputFields.textField3,
+      parent_name: inputFields.textField3,
       dept: dropdown1,
-      stdno: inputFields.textField4,
-      parentno: inputFields.textField5,
+      student_number: inputFields.textField4,
+      parent_number: inputFields.textField5,
       email: inputFields.textField6,
-      quote: dropdown2,
+      quote: Number(dropdown2),
     };
-
+    console.log(data);
     try {
-      const response = await fetch("http://localhost:8000/submit", {
-        method: "POST",
+      const response = await fetch("http://127.0.0.1:8000/add", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
@@ -235,8 +235,8 @@ function DocHeader() {
               fullWidth
             >
               <MenuItem value="" disabled>Select an option</MenuItem>
-              <MenuItem value="management">management Quote</MenuItem>
-              <MenuItem value="government">Government Quote</MenuItem>
+              <MenuItem value="1">management Quote</MenuItem>
+              <MenuItem value="0">Government Quote</MenuItem>
             </Select>
           </Grid>
 
