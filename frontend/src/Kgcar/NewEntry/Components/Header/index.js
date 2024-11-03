@@ -12,6 +12,7 @@ import SoftBox from "components/SoftBox";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import breakpoints from "assets/theme/base/breakpoints";
 import curved0 from "assets/images/curved-images/curved0.jpg";
+import { Receipt } from "@mui/icons-material";
 
 function DocHeader() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -74,14 +75,15 @@ function DocHeader() {
     }
 
     const data = {
-      name_std: inputFields.textField1,
-      admno: inputFields.textField2,
-      parent_name: inputFields.textField3,
+      name_stu: inputFields.textField1,
+      receipt: inputFields.textField2,
+      name_prnt: inputFields.textField3,
       dept: dropdown1,
-      student_number: inputFields.textField4,
-      parent_number: inputFields.textField5,
+      contact1: inputFields.textField4,
+      contact2: inputFields.textField5,
       email: inputFields.textField6,
-      quote: Number(dropdown2),
+      quota: Number(dropdown2),
+      ver:0
     };
     console.log(data);
     console.log(credentials);
