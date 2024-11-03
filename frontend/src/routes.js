@@ -76,7 +76,7 @@ const routes = [
   {
     name: "Edit Student",
     key: "editStudent",
-    route: "/edit-student",
+    route: "/edit-student/:admisson_no",
     component: <StudentDetailPage />,
   }
 ];

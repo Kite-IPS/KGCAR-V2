@@ -6,12 +6,12 @@ import TableRow from "@mui/material/TableRow";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton"; // Make sure to have a SoftButton component
-
+import { useNavigate } from "react-router-dom";
 function Table() {
   const [students, setStudents] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -92,7 +92,7 @@ function Table() {
         </SoftTypography>
       </SoftBox>
       <SoftBox component="td" p={1} textAlign="center">
-        <SoftButton variant="text" color="primary" onClick={() => console.log(`Editing ${student.name}`)}>
+        <SoftButton variant="text" color="primary" onClick={() => navigate(`/edit-student/${student.admission_no}`)}>
           Edit
         </SoftButton>
       </SoftBox>
