@@ -13,19 +13,18 @@ import {
   Checkbox,
   Button,
 } from "@mui/material";
-import { useParams } from "react-router-dom"; // Import useParams
+import { useParams } from "react-router-dom";
 
 function StudentDetailPage() {
+  const  admissionNo  = window.location.href.split("/").pop(); // Get the admission number from the URL
   const [student, setStudent] = useState(null);
   const [documents, setDocuments] = useState([]);
   const [submitAgreement, setSubmitAgreement] = useState(false);
-  const admissionNo = window.location.href.split('/').pop();
-  console.log("admissionNo", admissionNo); // Output: 33442
+  const [loading, setLoading] = useState(true); // Loading state
 
-
-  console.log("admissionNo", admissionNo);
   useEffect(() => {
     const fetchStudentData = async () => {
+      setLoading(true); // Start loading
       try {
         const response = await fetch(`http://127.0.0.1:8000/student/${admissionNo}/`, {
           method: "GET",
@@ -35,24 +34,46 @@ function StudentDetailPage() {
           },
         });
 
+        // Log the full response for debugging
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+
+        // Check if the response is okay
         if (!response.ok) {
-          throw new Error("Failed to fetch student data");
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log(data);
-        setStudent(data.student); // Assuming the response structure has a 'student' object
-        setDocuments(data.documents); // Assuming there is a 'documents' array in the response
+        console.log("API Response Data:", data); // Log the response data
+        
+        // Assuming the response has student and documents properties
+        if (data) {
+          setStudent(data); // Set student data
+        } else {
+          console.log("No student found in the response");
+          setStudent(null); // Explicitly set to null if no student data
+        }
+        
+        setDocuments(data.documents || []); // Set documents or empty array
       } catch (error) {
         console.error("Error fetching student data:", error);
+        setStudent(null); // Set to null on error
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
     fetchStudentData();
   }, [admissionNo]); // Fetch data whenever the admissionNo changes
 
+  // Show loading state
+  if (loading) {
+    return <Typography align="center">Loading...</Typography>;
+  }
+
+  // Show message if student data is not available
   if (!student) {
-    return <Typography align="center">Loading...</Typography>; // Show loading until data is fetched
+    return <Typography align="center">No student data available.</Typography>;
   }
 
   const currentDate = new Date().toLocaleDateString();
@@ -74,22 +95,22 @@ function StudentDetailPage() {
 
   return (
     <Card sx={{ padding: 2, margin: "1rem auto", maxWidth: "1000px" }}>
-      {/* Student Information */}
       <Typography variant="h6" mb={1}>Student Details</Typography>
       <Grid container spacing={1}>
         {Object.entries(student).map(([key, value]) => (
           <Grid item xs={12} sm={6} key={key}>
-            <Typography variant="subtitle2" style={{ fontSize: "0.9rem" }}>{key.replace(/([A-Z])/g, " $1")}</Typography>
+            <Typography variant="subtitle2" style={{ fontSize: "0.9rem" }}>
+              {key.replace(/([A-Z])/g, " $1")}
+            </Typography>
             <TextField value={value} fullWidth disabled variant="outlined" size="small" />
           </Grid>
         ))}
       </Grid>
 
-      {/* Document Table */}
       <Typography variant="h6" mt={3} mb={1}>Document Details</Typography>
       <TableContainer>
         <Table sx={{ width: "100%", border: "1px solid #ddd" }}>
-          <TableHead sx={{ padding: 0, width: "100%" }}>
+          <TableHead>
             <TableRow>
               <TableCell align="center" style={{ fontWeight: "bold", width: "10%" }}>S.No</TableCell>
               <TableCell align="center" style={{ fontWeight: "bold", width: "25%" }}>Document</TableCell>
@@ -101,9 +122,9 @@ function StudentDetailPage() {
           </TableHead>
           <TableBody>
             {documents.map((doc, index) => (
-              <TableRow key={doc.sNo} sx={{ borderBottom: "1px solid #ddd" }}>
-                <TableCell align="center" style={{ padding: "4px" }}>1</TableCell>
-                <TableCell align="center" style={{ padding: "4px" }}>document</TableCell>
+              <TableRow key={index} sx={{ borderBottom: "1px solid #ddd" }}>
+                <TableCell align="center" style={{ padding: "4px" }}>{index + 1}</TableCell>
+                <TableCell align="center" style={{ padding: "4px" }}>{doc.documentName || "Document Name"}</TableCell>
                 <TableCell align="center" style={{ padding: "4px" }}>{currentDate}</TableCell>
                 <TableCell align="center" style={{ padding: "4px" }}>
                   <Checkbox
@@ -136,7 +157,6 @@ function StudentDetailPage() {
         </Table>
       </TableContainer>
 
-      {/* Submit Section */}
       <Grid container spacing={1} mt={2} alignItems="center">
         <Grid item>
           <Checkbox
