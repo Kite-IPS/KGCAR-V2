@@ -82,7 +82,11 @@ function DocHeader() {
     };
   
     try {
+<<<<<<< HEAD
       const response = await fetch(`${process.env.REACT_APP_API_URL}/add/`, {  // Use environment variable here
+=======
+      const response = await fetch("http://localhost:8000/submit", {
+>>>>>>> 11a65474991ca55508e53de8d32e3c6fd0f48509
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +112,7 @@ function DocHeader() {
   return (
     <SoftBox position="relative">
       <DashboardNavbar absolute light />
-      
+
       <SoftBox
         display="flex"
         alignItems="center"
@@ -238,7 +242,7 @@ function DocHeader() {
               <MenuItem value="government">Government Quote</MenuItem>
             </Select>
           </Grid>
-          
+
           {/* Submit Button */}
           <Grid item xs={12} sm={6} md={3}>
             <Button
@@ -253,20 +257,32 @@ function DocHeader() {
         </Grid>
 
         {/* Success/Error Snackbar */}
+        {/* Success/Error Snackbar */}
         <Snackbar
           open={showMessage}
           onClose={() => setShowMessage(false)}
-          sx={{
-            position: "absolute",
-            top: "4vh",
-            right: "4vw",
-            transition: "ease-in-out",
-          }}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          autoHideDuration={3000}
         >
-          <Alert severity={messageColor === "error" ? "error" : "success"} sx={{ backgroundColor: messageColor === "error" ? "red" : "green", color: "white" }}>
+          <Alert
+            severity={messageColor === "error" ? "error" : "success"}
+            sx={{
+              backgroundColor: messageColor === "error" ? "#d32f2f" : "#388e3c",
+              color: "#fff",
+              fontWeight: "bold",
+              boxShadow: 3,
+              borderRadius: 2,
+              padding: "0.75rem 1.5rem",
+              "& .MuiAlert-icon": {
+                fontSize: "1.5rem",
+                color: "#fff",
+              },
+            }}
+          >
             {message}
           </Alert>
         </Snackbar>
+
       </Card>
     </SoftBox>
   );

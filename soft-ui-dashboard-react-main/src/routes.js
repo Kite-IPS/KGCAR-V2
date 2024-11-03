@@ -16,6 +16,7 @@ import DocSearchTables from "Kgcar/SearchStudents";
 import KgcarSignIn from "Kgcar/sign-in";
 import KgcarDownloadTables from "Kgcar/DownloadRecipt";
 import KgcarFinalTables from "Kgcar/FinalReport";
+import StudentDetailPage from "Kgcar/editStudent";
 
 
 const routes = [
@@ -71,6 +72,12 @@ const routes = [
     key: "login",
     route: "/login",
     component: <KgcarSignIn />,
+  },
+  {
+    name: "Edit Student",
+    key: "editStudent",
+    route: "/edit-student",
+    component: <StudentDetailPage />,
   }
 ];
 
