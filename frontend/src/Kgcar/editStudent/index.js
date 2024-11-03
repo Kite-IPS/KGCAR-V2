@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Grid,
@@ -13,34 +13,49 @@ import {
   Checkbox,
   Button,
 } from "@mui/material";
+import { useParams } from "react-router-dom"; // Import useParams
 
 function StudentDetailPage() {
-  const [student] = useState({
-    name: "John Doe",
-    admissionNo: "12345",
-    department: "Computer Science",
-    parentName: "Jane Doe",
-    studentNo: "S001",
-    parentNo: "P001",
-    email: "john.doe@example.com",
-    quote: "Sample quote",
-  });
+  const [student, setStudent] = useState(null);
+  const [documents, setDocuments] = useState([]);
+  const [submitAgreement, setSubmitAgreement] = useState(false);
+  const admissionNo = window.location.href.split('/').pop();
+  console.log("admissionNo", admissionNo); // Output: 33442
 
-  const [documents, setDocuments] = useState([
-    { sNo: 1, name: "Document 1" },
-    { sNo: 2, name: "Document 2" },
-    { sNo: 3, name: "Document 3" },
-    { sNo: 4, name: "Document 4" },
-    { sNo: 5, name: "Document 5" },
-    { sNo: 6, name: "Document 6" },
-    { sNo: 7, name: "Document 7" },
-    { sNo: 8, name: "Document 8" },
-    { sNo: 9, name: "Document 9" },
-    { sNo: 10, name: "Document 10" },
-  ]);
+
+  console.log("admissionNo", admissionNo);
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/student/${admissionNo}/`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("admin:admin"), // Replace with actual credentials
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch student data");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setStudent(data.student); // Assuming the response structure has a 'student' object
+        setDocuments(data.documents); // Assuming there is a 'documents' array in the response
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+      }
+    };
+
+    fetchStudentData();
+  }, [admissionNo]); // Fetch data whenever the admissionNo changes
+
+  if (!student) {
+    return <Typography align="center">Loading...</Typography>; // Show loading until data is fetched
+  }
 
   const currentDate = new Date().toLocaleDateString();
-  const [submitAgreement, setSubmitAgreement] = useState(false);
 
   const handleCheckboxChange = (index, field) => {
     setDocuments((prevDocuments) =>
@@ -74,7 +89,7 @@ function StudentDetailPage() {
       <Typography variant="h6" mt={3} mb={1}>Document Details</Typography>
       <TableContainer>
         <Table sx={{ width: "100%", border: "1px solid #ddd" }}>
-          <TableHead sx={{padding:0 ,width:"100%"}}>
+          <TableHead sx={{ padding: 0, width: "100%" }}>
             <TableRow>
               <TableCell align="center" style={{ fontWeight: "bold", width: "10%" }}>S.No</TableCell>
               <TableCell align="center" style={{ fontWeight: "bold", width: "25%" }}>Document</TableCell>
@@ -87,8 +102,8 @@ function StudentDetailPage() {
           <TableBody>
             {documents.map((doc, index) => (
               <TableRow key={doc.sNo} sx={{ borderBottom: "1px solid #ddd" }}>
-                <TableCell align="center" style={{ padding: "4px" }}>{doc.sNo}</TableCell>
-                <TableCell align="center" style={{ padding: "4px" }}>{doc.name}</TableCell>
+                <TableCell align="center" style={{ padding: "4px" }}>1</TableCell>
+                <TableCell align="center" style={{ padding: "4px" }}>document</TableCell>
                 <TableCell align="center" style={{ padding: "4px" }}>{currentDate}</TableCell>
                 <TableCell align="center" style={{ padding: "4px" }}>
                   <Checkbox
