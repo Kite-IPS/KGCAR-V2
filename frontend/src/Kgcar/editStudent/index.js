@@ -198,7 +198,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import NewEntryTableData from "Kgcar/NewEntry/Components/table/NewEntryTabledata";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import DocHeader from "./Components/Header";
-import Table from "Kgcar/NewEntry/Components/table";
 import KgcarFooter from "Kgcar/Footer";
 
 function DocTables() {
@@ -211,7 +210,7 @@ function DocTables() {
       <DocHeader />
       <SoftBox py={3}></SoftBox>
 
-      <Table columns={columns} rows={rows} />
+      {/* <Table columns={columns} rows={rows} /> */}
       {/* <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
