@@ -20,7 +20,7 @@ function DocSearchHeader({ setSearchResults }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
-
+  
   useEffect(() => {
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
@@ -37,7 +37,7 @@ function DocSearchHeader({ setSearchResults }) {
   const handleSearch = async () => {
     if (searchTerm) {
       try {
-        const response = await axios.get(`YOUR_BACKEND_API_URL/students?admissionNo=${searchTerm}`);
+        const response = await axios.get(`http://127.0.0.1:8000/student/${searchTerm}/`);
         if (response.data.length === 0) {
           throw new Error("Student not found");
         }
