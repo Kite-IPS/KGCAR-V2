@@ -148,7 +148,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
             <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in">
+              <Link to="/login">
                 <IconButton sx={navbarIconButton} size="large">
                   <Icon
                     sx={({ palette: { dark, white } }) => ({
