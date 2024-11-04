@@ -52,14 +52,14 @@ const authorsTableData = {
 
   rows: [
     {
-      author: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
-      function: <Function job="Manager" org="Organization" />,
+      author: <Author name="Yogesh"/>,
+      function: <Function job="12345" />,
       status: (
-        <SoftBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
+        <SoftBadge variant="gradient">CSE</SoftBadge>
       ),
       employed: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          23/04/18
+          3
         </SoftTypography>
       ),
       action: (
@@ -70,19 +70,19 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          Finish
         </SoftTypography>
       ),
     },
     {
-      author: <Author image={team3} name="Alexa Liras" email="alexa@creative-tim.com" />,
-      function: <Function job="Programator" org="Developer" />,
+      author: <Author name="Raja Rajan"/>,
+      function: <Function job="12245" />,
       status: (
-        <SoftBadge variant="gradient" badgeContent="offline" color="secondary" size="xs" container />
+        <SoftBadge variant="gradient">CSE</SoftBadge>
       ),
       employed: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          11/01/19
+          3
         </SoftTypography>
       ),
       action: (
@@ -93,19 +93,19 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          Finish
         </SoftTypography>
       ),
     },
     {
-      author: <Author image={team4} name="Laurent Perrier" email="laurent@creative-tim.com" />,
-      function: <Function job="Executive" org="Projects" />,
+      author: <Author name="Rajiv"/>,
+      function: <Function job="122345" />,
       status: (
-        <SoftBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
+        <SoftBadge variant="gradient">CSE</SoftBadge>
       ),
       employed: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          19/09/17
+          3
         </SoftTypography>
       ),
       action: (
@@ -116,19 +116,19 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          Finish
         </SoftTypography>
       ),
     },
     {
-      author: <Author image={team3} name="Michael Levi" email="michael@creative-tim.com" />,
-      function: <Function job="Programator" org="Developer" />,
+      author: <Author name="Nishanth"/>,
+      function: <Function job="123452" />,
       status: (
-        <SoftBadge variant="gradient" badgeContent="online" color="success" size="xs" container />
+        <SoftBadge variant="gradient">CSE</SoftBadge>
       ),
       employed: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          24/12/08
+          3
         </SoftTypography>
       ),
       action: (
@@ -139,19 +139,19 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          Finish
         </SoftTypography>
       ),
     },
     {
-      author: <Author image={team2} name="Richard Gran" email="richard@creative-tim.com" />,
-      function: <Function job="Manager" org="Executive" />,
+      author: <Author name="Mitun"/>,
+      function: <Function job="12245" />,
       status: (
-        <SoftBadge variant="gradient" badgeContent="offline" color="secondary" size="xs" container />
+        <SoftBadge variant="gradient">CSBS</SoftBadge>
       ),
       employed: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          04/10/21
+          3
         </SoftTypography>
       ),
       action: (
@@ -162,19 +162,19 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          Finish
         </SoftTypography>
       ),
     },
     {
-      author: <Author image={team4} name="Miriam Eric" email="miriam@creative-tim.com" />,
-      function: <Function job="Programtor" org="Developer" />,
+      author: <Author name="Sivakanesh"/>,
+      function: <Function job="1234523" />,
       status: (
-        <SoftBadge variant="gradient" badgeContent="offline" color="secondary" size="xs" container />
+        <SoftBadge variant="gradient">IT</SoftBadge>
       ),
       employed: (
         <SoftTypography variant="caption" color="secondary" fontWeight="medium">
-          14/09/20
+          3
         </SoftTypography>
       ),
       action: (
@@ -185,10 +185,11 @@ const authorsTableData = {
           color="secondary"
           fontWeight="medium"
         >
-          Edit
+          Finish
         </SoftTypography>
       ),
     },
+    
   ],
 };
 

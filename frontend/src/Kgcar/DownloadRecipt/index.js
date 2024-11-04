@@ -9,7 +9,7 @@ import SoftTypography from "components/SoftTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import Table from "examples/Tables/Table";
+import Table from "Kgcar/DownloadRecipt/Components/table";
 
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
@@ -31,7 +31,7 @@ function KgcarDownloadTables() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Authors table</SoftTypography>
+              <SoftTypography variant="h6">Student table</SoftTypography>
             </SoftBox>
             <SoftBox 
               sx={{
