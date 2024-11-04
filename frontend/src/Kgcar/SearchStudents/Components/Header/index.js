@@ -10,6 +10,7 @@ import SoftTypography from "components/SoftTypography";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import breakpoints from "assets/theme/base/breakpoints";
 import axios from "axios"; 
+import './index.css'
 import Snackbar from "@mui/material/Snackbar"; 
 import Alert from "@mui/material/Alert"; 
 import SoftButton from "components/SoftButton"; // Ensure you have a button component
@@ -58,48 +59,66 @@ function DocSearchHeader({ setSearchResults }) {
   };
 
   return (
-    <SoftBox position="relative">
-      <DashboardNavbar absolute light />
-      <SoftBox display="flex" alignItems="center" position="relative" minHeight="18.75rem">
-        <Card sx={{ mt: -8, mx: 3, py: 2, px: 2 }}>
-          <Grid container spacing={3} alignItems="center">
-            <Grid item xs={6}>
-              <SoftTypography variant="h4" fontWeight="bold">SEARCH STUDENTS</SoftTypography>
-            </Grid>
-            <Grid item xs={"100%"} style={{ display: "flex", justifyContent: "flex-end" }}>
-              <SoftBox pr={6}>
-                <TextField
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Enter admission no..."
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </SoftBox>
-              <SoftButton onClick={handleSearch} variant="contained" color="light">
-                Search
-              </SoftButton>
-            </Grid>
-          </Grid>
-        </Card>
-      </SoftBox>
+    // <SoftBox position="relative">
+    //   <DashboardNavbar absolute light />
+    //   <SoftBox display="flex" justifyContent="space-between" alignItems="center" position="relative" minHeight="18.75rem" width="100%" >
+    //     <Card sx={{ mt: -8, mx: 3, py: 2, px: 2 }}>
+    //       <Grid container spacing={3} alignItems="center">
+    //         <Grid item xs={6}>
+    //           <SoftTypography variant="h4" fontWeight="bold">SEARCH STUDENTS</SoftTypography>
+    //         </Grid>
+    //         <Grid item xs={"100%"} style={{ display: "flex", justifyContent: "flex-end" }}>
+    //           <SoftBox pr={6}>
+    //             <TextField
+    //               value={searchTerm}
+    //               onChange={(e) => setSearchTerm(e.target.value)}
+    //               placeholder="Enter admission no..."
+    //               InputProps={{
+    //                 startAdornment: (
+    //                   <InputAdornment position="start">
+    //                     <SearchIcon />
+    //                   </InputAdornment>
+    //                 ),
+    //               }}
+    //             />
+    //           </SoftBox>
+    //           <SoftButton onClick={handleSearch} variant="contained" color="info">
+    //             Search
+    //           </SoftButton>
+    //         </Grid>
+    //       </Grid>
+    //     </Card>
+    //   </SoftBox>
 
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-    </SoftBox>
+    //   <Snackbar
+    //     open={openSnackbar}
+    //     autoHideDuration={6000}
+    //     onClose={handleCloseSnackbar}
+    //     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+    //   >
+    //     <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+    //       {errorMessage}
+    //     </Alert>
+    //   </Snackbar>
+    // </SoftBox>
+    <>
+      <div className="searchbox-container">
+        <div className="searchbox">
+          <div className="searchbox-text"><h1>Search Student</h1></div>
+          <div className="searchbox__input">
+            <input
+              type="text"
+              placeholder="Enter admission no..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="searchbox__button">
+            <button onClick={handleSearch}>Search</button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
