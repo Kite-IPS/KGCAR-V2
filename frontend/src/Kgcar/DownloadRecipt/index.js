@@ -12,7 +12,7 @@ import Footer from "examples/Footer";
 import Table from "Kgcar/DownloadRecipt/Components/table";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
+import authorsTableData from "Kgcar/DownloadRecipt/Components/table/DownloadReciptTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import Header from "layouts/profile/components/Header";
 import DocHeader from "./Components/Header";
