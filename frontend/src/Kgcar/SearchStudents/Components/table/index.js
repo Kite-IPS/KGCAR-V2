@@ -53,6 +53,7 @@ function Table() {
     { name: "Student Name", align: "left" },
     { name: "Admission No", align: "center" },
     { name: "Department", align: "center" },
+    {name: "Version", align: "center"},
     { name: "Action", align: "center" },
   ];
 
@@ -92,8 +93,13 @@ function Table() {
         </SoftTypography>
       </SoftBox>
       <SoftBox component="td" p={1} textAlign="center">
+        <SoftTypography variant="caption" color="secondary">
+          {student.ver} {/* Adjust accordingly */}
+        </SoftTypography>
+      </SoftBox>
+      <SoftBox component="td" p={1} textAlign="center">
         <SoftButton variant="text" color="primary" onClick={() => navigate(`/edit-student/${student.admission_no}`)}>
-          Edit
+          View
         </SoftButton>
       </SoftBox>
     </TableRow>
