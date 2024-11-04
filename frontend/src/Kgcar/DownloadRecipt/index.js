@@ -25,7 +25,7 @@ function KgcarDownloadTables() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      {/* <DashboardNavbar /> */}
       <DocSearchHeader />
       <SoftBox py={3}>
         <SoftBox mb={3}>

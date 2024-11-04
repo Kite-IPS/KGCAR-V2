@@ -22,7 +22,7 @@ function KgcarFinalTables() {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar />
+      {/* <DashboardNavbar /> */}
       <DocHeader />
       <SoftBox py={3}></SoftBox>
       <SoftBox py={3}>
