@@ -43,4 +43,4 @@ const documentsTableData = {
   })),
 };
 
-export default documentsTableData;
+export default editStudentTableData;

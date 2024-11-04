@@ -10,8 +10,10 @@ import SoftBox from "components/SoftBox";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import breakpoints from "assets/theme/base/breakpoints";
 import curved0 from "assets/images/curved-images/curved0.jpg";
+import Table from "Kgcar/NewEntry/Components/table";
+import PropTypes from "prop-types";
 
-function DocHeader() {
+function DocHeader({ columns, rows}) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [studentData, setStudentData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -129,6 +131,10 @@ function DocHeader() {
               </Grid>
               
             ))}
+            <SoftBox py={3}>
+              <Table columns={columns} rows={rows} />
+            </SoftBox>
+
             <Grid container justifyContent="flex-end" sx={{ mt: 4 }}>
               <Button variant="contained" onClick={handleEditClick}>
                 {isEditing ? "Save" : "Edit"}
@@ -167,5 +173,11 @@ function DocHeader() {
     </SoftBox>
   );
 }
+
+DocHeader.propTypes = {
+  columns: PropTypes.array.isRequired,
+  rows: PropTypes.array.isRequired,
+};
+
 
 export default DocHeader;

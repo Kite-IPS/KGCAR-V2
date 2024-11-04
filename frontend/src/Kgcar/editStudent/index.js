@@ -195,6 +195,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
+
 import NewEntryTableData from "Kgcar/NewEntry/Components/table/NewEntryTabledata";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import DocHeader from "./Components/Header";
@@ -207,7 +208,7 @@ function DocTables() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <DocHeader />
+      <DocHeader columns={columns} rows={rows}/>
       <SoftBox py={3}></SoftBox>
 
       {/* <Table columns={columns} rows={rows} /> */}
