@@ -11,10 +11,12 @@ import SoftTypography from "components/SoftTypography";
 import SoftBox from "components/SoftBox";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import breakpoints from "assets/theme/base/breakpoints";
-import curved0 from "assets/images/curved-images/curved0.jpg";
+import curved0 from "assets/images/curved-images/curved5.jpg";
 import { Receipt } from "@mui/icons-material";
+import Table from "Kgcar/NewEntry/Components/table";
+import PropTypes from "prop-types";
 
-function DocHeader() {
+function DocHeader({ columns, rows }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [dropdown1, setDropdown1] = useState("");
   const [dropdown2, setDropdown2] = useState("");
@@ -83,12 +85,12 @@ function DocHeader() {
       contact2: inputFields.textField5,
       email: inputFields.textField6,
       quota: Number(dropdown2),
-      ver:0
+      ver: 0
     };
     console.log(data);
     console.log(credentials);
     try {
-        const response = await fetch("http://127.0.0.1:8000/add/", {
+      const response = await fetch("http://127.0.0.1:8000/add/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +105,7 @@ function DocHeader() {
       } else {
         setMessage("Student is not added."); // Error message
         setMessageColor("error");
-        
+
       }
     } catch (error) {
       setMessage("Student is not added."); // Error message in case of network issues
@@ -249,16 +251,28 @@ function DocHeader() {
           </Grid>
 
           {/* Submit Button */}
-          <Grid item xs={12} sm={6} md={3}>
+        
+            {/* Text fields go here */}
+        <Grid item xs={12} sm={12} md={12}>
+            {/* Table positioned below the text fields and above the submit button */}
+            <SoftBox py={3}>
+              <Table columns={columns} rows={rows} />
+            </SoftBox>
+
+            {/* Submit button */}
+            <Grid item xs={12} sm={6} md={3} alignItems={"right"}>
             <Button
               variant="contained"
               fullWidth
               onClick={handleSubmit}
               sx={{ mt: 2 }}
+              
             >
               Submit
             </Button>
           </Grid>
+          </Grid>
+         
         </Grid>
 
         {/* Success/Error Snackbar */}
@@ -292,6 +306,11 @@ function DocHeader() {
     </SoftBox>
   );
 }
+
+DocHeader.propTypes = {
+  columns: PropTypes.array.isRequired,
+  rows: PropTypes.array.isRequired,
+};
 
 export default DocHeader;
 

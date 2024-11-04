@@ -67,10 +67,11 @@
             pl={align === "left" ? pl : 3}
             pr={align === "right" ? pr : 3}
             textAlign={align}
-            fontSize={size.xxs}
+            fontSize={size.md}
             fontWeight={fontWeightBold}
-            color="secondary"
+            color="black"
             opacity={0.7}
+            bgcolor="blue"
             borderBottom={`${borderWidth[1]} solid ${light.main}`}
         >
             {name.toUpperCase()}
