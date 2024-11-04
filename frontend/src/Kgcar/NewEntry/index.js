@@ -22,34 +22,9 @@ function DocTables() {
 
   return (
     <DashboardLayout>
-      {/* <DashboardNavbar /> */}
-      <DocHeader />
-      <SoftBox py={3}></SoftBox>
-
-      <Table columns={columns} rows={rows} />
-      {/* <SoftBox py={3}>
-        <SoftBox mb={3}>
-          <Card>
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Authors table</SoftTypography>
-            </SoftBox>
-            <SoftBox
-              sx={{
-                "& .MuiTableRow-root:not(:last-child)": {
-                  "& td": {
-                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                      `${borderWidth[2]} solid ${borderColor}`,
-                  },
-                },
-              }}
-            >
-              <Table columns={columns} rows={rows} />
-            </SoftBox>
-          </Card>
-        </SoftBox>
-      </SoftBox> */}
-      <KgcarFooter />
-    </DashboardLayout>
+    <DocHeader columns={columns} rows={rows} /> {/* Pass columns and rows as props */}
+    <KgcarFooter />
+  </DashboardLayout>
   );
 }
 
