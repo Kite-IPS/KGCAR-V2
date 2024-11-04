@@ -166,7 +166,25 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   </SoftTypography>
                 </IconButton>
               </Link>
-              
+              <IconButton
+                size="small"
+                color="inherit"
+                sx={navbarMobileMenu}
+                onClick={handleMiniSidenav}
+              >
+                <Icon className={light ? "text-white" : "text-dark"}>
+                  {miniSidenav ? "menu_open" : "menu"}
+                </Icon>
+              </IconButton>
+              <IconButton
+                size="small"
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleConfiguratorOpen}
+              >
+                <Icon>settings</Icon>
+              </IconButton>
+
               <IconButton
                 size="small"
                 color="inherit"
