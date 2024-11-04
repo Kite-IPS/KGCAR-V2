@@ -10,13 +10,14 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
+import NewEntryTableData from "Kgcar/NewEntry/Components/table/NewEntryTabledata";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import DocHeader from "./Components/Header";
+import Table from "Kgcar/NewEntry/Components/table";
 import KgcarFooter from "Kgcar/Footer";
 
 function DocTables() {
-  const { columns, rows } = authorsTableData;
+  const { columns, rows } = NewEntryTableData;
   const { columns: prCols, rows: prRows } = projectsTableData;
 
   return (
@@ -24,6 +25,8 @@ function DocTables() {
       <DashboardNavbar />
       <DocHeader />
       <SoftBox py={3}></SoftBox>
+
+      <Table columns={columns} rows={rows} />
       {/* <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
