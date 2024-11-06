@@ -182,11 +182,13 @@ function DocHeader() {
                           <TableCell align="center">
                             <Checkbox
                               checked={row.original}
+                              sx={{ transform: "scale(2)" }}
                               onChange={(e) => handleTableChange(index, 'original', e.target.checked)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Checkbox
+                              sx={{ transform: "scale(2)" }}
                               checked={row.photocopy}
                               onChange={(e) => handleTableChange(index, 'photocopy', e.target.checked)}
                             />
