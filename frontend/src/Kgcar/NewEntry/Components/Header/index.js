@@ -1,78 +1,42 @@
-import { useState, useEffect } from "react";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import { useState } from "react";
+import {
+  Card, Grid, TextField, Select, MenuItem, Button,
+  Snackbar, Alert, TableContainer, Table, TableBody,
+  TableRow, TableCell, TableHead, Checkbox
+} from "@mui/material";
 import SoftTypography from "components/SoftTypography";
 import SoftBox from "components/SoftBox";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import breakpoints from "assets/theme/base/breakpoints";
 import curved0 from "assets/images/curved-images/curved5.jpg";
-import { Receipt } from "@mui/icons-material";
-import Table from "Kgcar/NewEntry/Components/table";
-import PropTypes from "prop-types";
 
-function DocHeader({ columns, rows }) {
-  const [tabsOrientation, setTabsOrientation] = useState("horizontal");
+function DocHeader() {
+  const [inputFields, setInputFields] = useState({
+    textField1: "", textField2: "", textField3: "",
+    textField4: "", textField5: "", textField6: ""
+  });
   const [dropdown1, setDropdown1] = useState("");
   const [dropdown2, setDropdown2] = useState("");
-  const [inputFields, setInputFields] = useState({
-    textField1: "", // stdname
-    textField2: "", // admno
-    textField3: "", // parentname
-    textField4: "", // stdno
-    textField5: "", // parentno
-    textField6: "", // email
-  });
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("error");
-
-  useEffect(() => {
-    function handleTabsOrientation() {
-      return window.innerWidth < breakpoints.values.sm
-        ? setTabsOrientation("vertical")
-        : setTabsOrientation("horizontal");
-    }
-    window.addEventListener("resize", handleTabsOrientation);
-    handleTabsOrientation();
-    return () => window.removeEventListener("resize", handleTabsOrientation);
-  }, [tabsOrientation]);
+  const [showTable, setShowTable] = useState(false); // Controls table visibility
+  const [tableData, setTableData] = useState([]);
 
   const handleInputChange = (event) => {
-    setInputFields({
-      ...inputFields,
-      [event.target.name]: event.target.value,
-    });
+    setInputFields({ ...inputFields, [event.target.name]: event.target.value });
+  };
+
+  const handleTableChange = (index, field, value) => {
+    const updatedTableData = [...tableData];
+    updatedTableData[index][field] = value;
+    setTableData(updatedTableData);
   };
 
   const handleSubmit = async () => {
-    const username = "admin"; // Replace with actual username
-    const password = "admin"; // Replace with actual password
-    const credentials = btoa(`${username}:${password}`); // Base64 encoding
-    // Reset input fields immediately on submit
-    setInputFields({
-      textField1: "",
-      textField2: "",
-      textField3: "",
-      textField4: "",
-      textField5: "",
-      textField6: "",
-    });
-    setDropdown1("");
-    setDropdown2("");
-
-    const allFieldsFilled = Object.values(inputFields).every(field => field) && dropdown1 && dropdown2;
-
-    if (!allFieldsFilled) {
+    if (!Object.values(inputFields).every(field => field) || !dropdown1 || !dropdown2) {
       setMessage("Please fill all fields.");
       setMessageColor("error");
       setShowMessage(true);
-      setTimeout(() => setShowMessage(false), 3000);
       return;
     }
 
@@ -84,233 +48,186 @@ function DocHeader({ columns, rows }) {
       contact1: inputFields.textField4,
       contact2: inputFields.textField5,
       email: inputFields.textField6,
-      quota: Number(dropdown2),
-      ver: 0
+      quota: dropdown2 === "Management Quote" ? 1 : 0,
+      ver: 1
     };
-    console.log(data);
-    console.log(credentials);
+
     try {
       const response = await fetch("http://127.0.0.1:8000/add/", {
         method: "POST",
         headers: {
+          "Authorization": "Basic " + btoa("admin:admin"),
           "Content-Type": "application/json",
-          "Authorization": `Basic ${credentials}`,
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        setMessage("Student added successfully!"); // Success message
+        setMessage("Data submitted successfully!");
         setMessageColor("success");
       } else {
-        setMessage("Student is not added."); // Error message
+        setMessage("Error submitting data.");
         setMessageColor("error");
-
       }
+      setShowMessage(true);
     } catch (error) {
-      setMessage("Student is not added."); // Error message in case of network issues
+      setMessage("Error submitting data.");
       setMessageColor("error");
-      console.error("Error adding student:", error);
+      setShowMessage(true);
+      console.error("Error submitting data:", error);
     }
-
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 3000);
   };
+
+  const fetchDocumentNames = async () => {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/get-document/", {
+            headers: {
+                "Authorization": "Basic " + btoa("admin:admin"),
+                "Content-Type": "application/json",
+            },
+        });
+        
+        if (response.ok) {
+            const documents = await response.json();
+            // Map only the names from the response to the table data
+            const updatedTableData = documents.map((doc, index) => ({
+                sNo: index + 1,
+                document: doc.name,  // Extract just the name from each document object
+                date: new Date().toISOString().split("T")[0],
+                original: false,
+                photocopy: false,
+                count: ""
+            }));
+            setTableData(updatedTableData);
+            setShowTable(true);
+        } else {
+            const errorData = await response.json();
+            setMessage(errorData.error || "Failed to fetch document names");
+            setMessageColor("error");
+            setShowMessage(true);
+        }
+    } catch (error) {
+        setMessage("Error fetching document names");
+        setMessageColor("error");
+        setShowMessage(true);
+        console.error("Error:", error);
+    }
+};
+
+  const handleButtonClick = () => {
+    if (showTable) {
+      handleSubmit(); // Submit data if the table is already shown
+    } else {
+      fetchDocumentNames(); // Fetch document names if the table is hidden
+    }
+  };
+
   return (
     <SoftBox position="relative">
       <DashboardNavbar absolute light />
-
-      <SoftBox
-        display="flex"
-        alignItems="center"
-        position="relative"
-        minHeight="18.75rem"
-        borderRadius="xl"
-        sx={{
-          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
-            `${linearGradient(
-              rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
-            )}, url(${curved0})`,
-          backgroundSize: "cover",
-          backgroundPosition: "50%",
-          overflow: "hidden",
-        }}
-      />
-      <Card
-        minHeight="50rem"
-        sx={{
-          backdropFilter: `saturate(200%) blur(30px)`,
-          backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
-          boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
-          position: "relative",
-          mt: -8,
-          mx: 3,
-          py: 2,
-          px: 2,
-        }}
-      >
+      <SoftBox display="flex" alignItems="center" minHeight="18.75rem" borderRadius="xl" sx={{
+        backgroundImage: `url(${curved0})`, backgroundSize: "cover",
+        backgroundPosition: "50%", overflow: "hidden"
+      }} />
+      <Card minHeight="50rem" sx={{ mt: -8, mx: 3, py: 2, px: 2 }}>
         <Grid container spacing={3}>
-          {/* First Row: 3 Text Fields + 1 Dropdown */}
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Student Name</SoftTypography>
-            <TextField
-              name="textField1"
-              variant="outlined"
-              fullWidth
-              value={inputFields.textField1}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Admission No</SoftTypography>
-            <TextField
-              name="textField2"
-              variant="outlined"
-              fullWidth
-              value={inputFields.textField2}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Parent Name</SoftTypography>
-            <TextField
-              name="textField3"
-              variant="outlined"
-              fullWidth
-              value={inputFields.textField3}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Department</SoftTypography>
-            <Select
-              value={dropdown1}
-              onChange={(e) => setDropdown1(e.target.value)}
-              displayEmpty
-              variant="outlined"
-              fullWidth
-            >
-              <MenuItem value="" disabled>Select an option</MenuItem>
-              <MenuItem value="CSE">CSE</MenuItem>
-              <MenuItem value="AIDS">AI & DS</MenuItem>
-              <MenuItem value="IT">IT</MenuItem>
-              <MenuItem value="ECE">ECE</MenuItem>
-              <MenuItem value="CSBS">CSBS</MenuItem>
-              <MenuItem value="MECH">MECH</MenuItem>
-              <MenuItem value="CYS">CYS</MenuItem>
-              <MenuItem value="AIML">AI & ML</MenuItem>
-              <MenuItem value="MBA">MBA</MenuItem>
-            </Select>
-          </Grid>
+          {/* Input Fields and Dropdowns */}
+          {["Student Name", "Admission No", "Parent Name", "Student No", "Parent No", "Email"].map((label, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <SoftTypography variant="body2">{label}</SoftTypography>
+              <TextField name={`textField${index + 1}`} variant="outlined" fullWidth
+                value={inputFields[`textField${index + 1}`]} onChange={handleInputChange} />
+            </Grid>
+          ))}
+          {["Department", "Quote"].map((label, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <SoftTypography variant="body2">{label}</SoftTypography>
+              <Select value={index === 0 ? dropdown1 : dropdown2}
+                onChange={e => index === 0 ? setDropdown1(e.target.value) : setDropdown2(e.target.value)}
+                displayEmpty variant="outlined" fullWidth>
+                <MenuItem value="" disabled>Select an option</MenuItem>
+                {index === 0
+                  ? ["CSE", "AIDS", "IT", "ECE", "CSBS", "MECH", "CYS", "AIML", "MBA"].map((opt, i) => (
+                    <MenuItem value={opt} key={i}>{opt}</MenuItem>
+                  ))
+                  : ["Management Quote", "Government Quote"].map((opt, i) => (
+                    <MenuItem value={opt} key={i}>{opt}</MenuItem>
+                  ))}
+              </Select>
+            </Grid>
+          ))}
 
-          {/* Second Row: 3 Text Fields + 1 Dropdown */}
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Student No</SoftTypography>
-            <TextField
-              name="textField4"
-              variant="outlined"
-              fullWidth
-              value={inputFields.textField4}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Parent No</SoftTypography>
-            <TextField
-              name="textField5"
-              variant="outlined"
-              fullWidth
-              value={inputFields.textField5}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Email</SoftTypography>
-            <TextField
-              name="textField6"
-              variant="outlined"
-              fullWidth
-              value={inputFields.textField6}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <SoftTypography variant="body2" sx={{ mb: 1 }}>Quote</SoftTypography>
-            <Select
-              value={dropdown2}
-              onChange={(e) => setDropdown2(e.target.value)}
-              displayEmpty
-              variant="outlined"
-              fullWidth
-            >
-              <MenuItem value="" disabled>Select an option</MenuItem>
-              <MenuItem value="1">management Quote</MenuItem>
-              <MenuItem value="0">Government Quote</MenuItem>
-            </Select>
-          </Grid>
+          {/* Document Table */}
+          {showTable && (
+            <Grid item xs={12}>
+              <SoftBox py={3}>
+                <TableContainer sx={{ width: "100%" }}>
+                  <Table>
+                    <TableHead class="newentry-table-head">
+                      <TableRow>
+                        <TableCell align="center">S.No</TableCell>
+                        <TableCell align="center">Document</TableCell>
+                        <TableCell align="center">Date</TableCell>
+                        <TableCell align="center">Original</TableCell>
+                        <TableCell align="center">Photocopy</TableCell>
+                        <TableCell align="center">Count</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {tableData.map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell align="center">{row.sNo}</TableCell>
+                          <TableCell align="center">{row.document}</TableCell>
+                          <TableCell align="center">{row.date}</TableCell>
+                          <TableCell align="center">
+                            <Checkbox
+                              checked={row.original}
+                              onChange={(e) => handleTableChange(index, 'original', e.target.checked)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Checkbox
+                              checked={row.photocopy}
+                              onChange={(e) => handleTableChange(index, 'photocopy', e.target.checked)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.photocopy ? (
+                              <TextField
+                                type="number"
+                                value = {row.count + 1}
+                                onChange={(e) => handleTableChange(index, 'count', e.target.value)}
+                              />
+                            ) : (
+                              <div style={{ border: "1px solid #ccc",margin: "auto", borderRadius: "4px", textAlign: "center", height: "40px", width: "200px" }}>
+                                {row.count}
+                              </div>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </SoftBox>
+            </Grid>
+          )}
 
-          {/* Submit Button */}
-        
-            {/* Text fields go here */}
-        <Grid item xs={12} sm={12} md={12}>
-            {/* Table positioned below the text fields and above the submit button */}
-            <SoftBox py={3}>
-              <Table columns={columns} rows={rows} />
-            </SoftBox>
-
-            {/* Submit button */}
-            <Grid item xs={12} sm={6} md={3} alignItems={"right"}>
-            <Button
-              variant="contained"
-              fullWidth
-              onClick={handleSubmit}
-              sx={{ mt: 2 }}
-              
-            >
-              Submit
+          {/* Toggle Button */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Button variant="contained" fullWidth onClick={handleButtonClick}>
+              {showTable ? "Submit" : "Get Document"}
             </Button>
           </Grid>
-          </Grid>
-         
         </Grid>
 
-        {/* Success/Error Snackbar */}
-        {/* Success/Error Snackbar */}
-        <Snackbar
-          open={showMessage}
-          onClose={() => setShowMessage(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          autoHideDuration={3000}
-        >
-          <Alert
-            severity={messageColor === "error" ? "error" : "success"}
-            sx={{
-              backgroundColor: messageColor === "error" ? "#d32f2f" : "#388e3c",
-              color: "#fff",
-              fontWeight: "bold",
-              boxShadow: 3,
-              borderRadius: 2,
-              padding: "0.75rem 1.5rem",
-              "& .MuiAlert-icon": {
-                fontSize: "1.5rem",
-                color: "#fff",
-              },
-            }}
-          >
-            {message}
-          </Alert>
+        {/* Snackbar for Success/Error Messages */}
+        <Snackbar open={showMessage} onClose={() => setShowMessage(false)} autoHideDuration={3000}>
+          <Alert severity={messageColor === "error" ? "error" : "success"}>{message}</Alert>
         </Snackbar>
-
       </Card>
     </SoftBox>
   );
 }
 
-DocHeader.propTypes = {
-  columns: PropTypes.array.isRequired,
-  rows: PropTypes.array.isRequired,
-};
-
 export default DocHeader;
-
