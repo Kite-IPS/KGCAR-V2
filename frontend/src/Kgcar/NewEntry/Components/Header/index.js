@@ -49,7 +49,7 @@ function DocHeader() {
       contact2: inputFields.textField5,
       email: inputFields.textField6,
       quota: dropdown2 === "Management Quote" ? 1 : 0,
-      ver: 1
+      ver: "1"
     };
 
     try {
