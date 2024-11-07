@@ -31,7 +31,7 @@ function DocSearchTables() {
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-              <SoftTypography variant="h6">Student Table</SoftTypography>
+              <SoftTypography variant="h5">Student Table</SoftTypography>
             </SoftBox>
             <SoftBox 
               sx={{

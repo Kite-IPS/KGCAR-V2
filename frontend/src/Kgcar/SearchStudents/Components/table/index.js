@@ -50,7 +50,7 @@ function Table() {
   }
 
   const columns = [
-    { name: "Student Name", align: "left" },
+    { name: "Student Name", align: "center" },
     { name: "Admission No", align: "center" },
     { name: "Department", align: "center" },
     {name: "Version", align: "center"},
@@ -68,8 +68,8 @@ function Table() {
       textAlign={align}
       fontSize="0.875rem"
       fontWeight="bold"
-      color="secondary"
-      opacity={0.7}
+      color="dark"
+      opacity={1}
     >
       {name.toUpperCase()}
     </SoftBox>
@@ -77,7 +77,7 @@ function Table() {
 
   const renderRows = students.map((student, key) => (
     <TableRow key={key}>
-      <SoftBox component="td" p={1} textAlign="left">
+      <SoftBox component="td" p={1} textAlign="center">
         <SoftTypography variant="button" fontWeight="regular" color="secondary">
           {student.name} {/* Adjust according to your student object structure */}
         </SoftTypography>
@@ -98,7 +98,7 @@ function Table() {
         </SoftTypography>
       </SoftBox>
       <SoftBox component="td" p={1} textAlign="center">
-        <SoftButton variant="text" color="primary" onClick={() => navigate(`/edit-student/${student.admission_no}`)}>
+        <SoftButton variant="text" color="info" onClick={() => navigate(`/edit-student/${student.admission_no}`)}>
           View
         </SoftButton>
       </SoftBox>
