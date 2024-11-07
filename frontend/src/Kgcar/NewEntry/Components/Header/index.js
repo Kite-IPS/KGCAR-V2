@@ -51,7 +51,7 @@ function DocHeader() {
       contact2: inputFields.textField5,
       email: inputFields.textField6,
       quota: dropdown2 === "Management Quote" ? 1 : 0,
-      ver: 1,  // assuming version is 1
+      ver: 1,
       files: tableData.map(row => ({
         name: row.document,
         original: row.original,
@@ -59,7 +59,7 @@ function DocHeader() {
         count: parseInt(row.count) || 0
       }))
     };
-    console.log(data);
+  
     try {
       const response = await fetch("http://127.0.0.1:8000/add/", {
         method: "POST",
@@ -73,6 +73,16 @@ function DocHeader() {
       if (response.ok) {
         setMessage("Data submitted successfully!");
         setMessageColor("success");
+        
+        // Reset all input fields and table data
+        setInputFields({
+          textField1: "", textField2: "", textField3: "",
+          textField4: "", textField5: "", textField6: ""
+        });
+        setDropdown1("");
+        setDropdown2("");
+        setTableData([]);
+        setShowTable(false);  // Optionally hide the table if you want
       } else {
         setMessage("Error submitting data.");
         setMessageColor("error");
@@ -205,9 +215,10 @@ function DocHeader() {
                             {row.photocopy ? (
                               <TextField
                                 type="number"
-                                value = {row.count + 1}
+                                value={row.count || 1}
                                 onChange={(e) => handleTableChange(index, 'count', e.target.value)}
                               />
+                            
                             ) : (
                               <div style={{ border: "1px solid #ccc",margin: "auto", borderRadius: "4px", textAlign: "center", height: "40px", width: "200px" }}>
                                 {row.count}
