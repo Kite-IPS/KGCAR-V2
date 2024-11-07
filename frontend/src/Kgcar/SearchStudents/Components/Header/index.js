@@ -94,7 +94,7 @@ function DocSearchHeader() {
                       <td align="center">{student.department}</td>
                       <td align="center">{student.email}</td>
                       <td align="center">
-                        <SoftButton variant="text" color="info" onClick={()=>navigate(`/edit-student/${student.admission_no}/`)}>View</SoftButton>
+                        <SoftButton variant="text" color="info" onClick={()=>navigate(`/edit-student/${student.admission_no}`)}>View</SoftButton>
                       </td>
                     </tr>
                   ))}
