@@ -7,21 +7,35 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SoftTypography from "components/SoftTypography";
 import SoftBox from "components/SoftBox";
+import { Select, MenuItem } from "@mui/material";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import breakpoints from "assets/theme/base/breakpoints";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import Table from "Kgcar/NewEntry/Components/table";
 import PropTypes from "prop-types";
+import './index.css';
 
-function DocHeader({ columns, rows}) {
+
+function DocHeader({ columns, rows }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
-  const [studentData, setStudentData] = useState(null);
+  const [studentData, setStudentData] = useState({
+    name: "",
+    admission_no: "",
+    department: "",
+    parent_name: "",
+    student_number: "",
+    parent_number: "",
+    email: "",
+    quota: "",
+    version: ""
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("error");
 
-  useEffect(() => { 
+  const departmentOptions = ["CSE", "AIDS", "ECE", "CSBS", "IT", "MECH", "CYS", "AIML", "MBA"];
+  useEffect(() => {
     const handleTabsOrientation = () => {
       setTabsOrientation(window.innerWidth < breakpoints.values.sm ? "vertical" : "horizontal");
     };
@@ -79,7 +93,7 @@ function DocHeader({ columns, rows}) {
   };
 
   return (
-    <SoftBox position="relative">
+    <SoftBox position="relative" >
       <DashboardNavbar absolute light />
       <SoftBox
         display="flex"
@@ -111,40 +125,126 @@ function DocHeader({ columns, rows}) {
           px: 2,
         }}
       >
-        {studentData ? (
-          <Grid container spacing={3}>
-            {Object.entries(studentData).map(([key, value]) => (
-              <Grid item xs={12} sm={6} md={3} key={key}>
-                <SoftTypography variant="linear">{key.replace("_", " ").toUpperCase()}</SoftTypography>
-                {isEditing ? (
-                  <TextField
-                    name={key}
-                    value={value}
-                    onChange={handleInputChange}
-                    fullWidth
-                  />
-                ) : (
-                  <SoftTypography>
-                    {key === "quota" ? (value ? "Government Quota" : "Management Quota") : value}
-                  </SoftTypography>
-                )}
-              </Grid>
-              
-            ))}
-            <SoftBox py={3}>
-              <Table columns={columns} rows={rows} />
-            </SoftBox>
-
-            <Grid container justifyContent="flex-end" sx={{ mt: 4 }}>
-              <Button variant="contained" onClick={handleEditClick}>
-                {isEditing ? "Save" : "Edit"}
-              </Button>
-            </Grid>
+        <Grid container>
+          {/* Manually render each field */}
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">NAME</SoftTypography>
+            {isEditing ? (
+              <TextField name="name" value={studentData.name} onChange={handleInputChange} fullWidth />
+            ) : (
+              <SoftTypography>{studentData.name}</SoftTypography>
+            )}
           </Grid>
-        ) : (
-          <SoftTypography variant="linear">Loading...</SoftTypography>
-        )}
-    
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">ADMISSION NO</SoftTypography>
+            {isEditing ? (
+              <TextField name="admission_no" value={studentData.admission_no} onChange={handleInputChange} fullWidth />
+            ) : (
+              <SoftTypography>{studentData.admission_no}</SoftTypography>
+            )}
+          </Grid>
+
+          {/* Continue with each specific field in this manner */}
+          {/* Department */}
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear"className="heading" >E-MAIL</SoftTypography>
+            {isEditing ? (
+              <TextField name="email" value={studentData.email} onChange={handleInputChange} fullWidth />
+            ) : (
+              <SoftTypography>{studentData.email}</SoftTypography>
+            )}
+          </Grid>
+
+          {/* Version - Non-editable */}
+          
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">STUDENT NUMBER</SoftTypography>
+            {isEditing ? (
+              <TextField name="student_number" value={studentData.student_number} onChange={handleInputChange} fullWidth />
+            ) : (
+              <SoftTypography>{studentData.student_number}</SoftTypography>
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">PARENT NUMBER</SoftTypography>
+            {isEditing ? (
+              <TextField name="parent_number" value={studentData.parent_number} onChange={handleInputChange} fullWidth />
+            ) : (
+              <SoftTypography>{studentData.parent_number}</SoftTypography>
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">PARENT NAME</SoftTypography>
+            {isEditing ? (
+              <TextField name="parent_name" value={studentData.parent_name} onChange={handleInputChange} fullWidth />
+            ) : (
+              <SoftTypography>{studentData.parent_name}</SoftTypography>
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">DEPARTMENT</SoftTypography>
+            {isEditing ? (
+              <Select
+                name="department"
+                value={studentData.department}
+                onChange={handleInputChange}
+                fullWidth
+              >
+                {departmentOptions.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            ) : (
+              <SoftTypography>{studentData.department}</SoftTypography>
+            )}
+          </Grid>
+
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">QUOTA</SoftTypography>
+            {isEditing ? (
+              <Select
+                name="quota"
+                value={studentData.quota ? 0 : 1} // Sets default as per backend values (0 for Management, 1 for Government)
+                onChange={(e) =>
+                  handleInputChange({
+                    target: { name: "quota", value: e.target.value === 0 }
+                  })
+                }
+                fullWidth
+              >
+                <MenuItem value={0}>Management</MenuItem>
+                <MenuItem value={1}>Government</MenuItem>
+              </Select>
+            ) : (
+              <SoftTypography>{studentData.quota ? "Management" : "Government"}</SoftTypography>
+            )}
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3} >
+            <SoftTypography variant="linear" className="heading">VERSION</SoftTypography>
+            <SoftTypography>{studentData.ver}</SoftTypography>
+          </Grid>
+
+          
+          <SoftBox py={3} mt={7}>
+            <Table columns={columns} rows={rows} />
+          </SoftBox>
+
+          <Grid container justifyContent="flex-end" sx={{ mt: 4 }}>
+            <Button variant="contained" onClick={handleEditClick}>
+              {isEditing ? "Save" : "Edit"}
+            </Button>
+          </Grid>
+        </Grid>
+
         <Snackbar
           open={showMessage}
           onClose={() => setShowMessage(false)}
@@ -178,6 +278,5 @@ DocHeader.propTypes = {
   columns: PropTypes.array.isRequired,
   rows: PropTypes.array.isRequired,
 };
-
 
 export default DocHeader;

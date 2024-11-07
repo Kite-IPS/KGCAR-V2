@@ -1,0 +1,23 @@
+.border-r{
+    border:2px solid red;
+}
+.border-g{
+    border:2px solid green;
+}
+.border-b{
+    border:2px solid blue; 
+}
+.border-o{
+    border:2px solid orange;
+}
+.m-t{
+    margin:10px 0;
+}
+.gap{
+    margin:15px;
+}
+.heading{
+    font-size:0.9rem;
+    color:#000000;
+    font-weight:600;
+}
