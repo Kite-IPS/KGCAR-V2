@@ -33,13 +33,15 @@ function DocHeader() {
   };
 
   const handleSubmit = async () => {
+    // Check if all fields are filled
     if (!Object.values(inputFields).every(field => field) || !dropdown1 || !dropdown2) {
       setMessage("Please fill all fields.");
       setMessageColor("error");
       setShowMessage(true);
       return;
     }
-
+  
+    // Prepare the data from the input fields and dropdowns
     const data = {
       name_stu: inputFields.textField1,
       receipt: inputFields.textField2,
@@ -49,9 +51,15 @@ function DocHeader() {
       contact2: inputFields.textField5,
       email: inputFields.textField6,
       quota: dropdown2 === "Management Quote" ? 1 : 0,
-      ver: "1"
+      ver: 1,  // assuming version is 1
+      files: tableData.map(row => ({
+        name: row.document,
+        original: row.original,
+        copy: row.photocopy,
+        count: parseInt(row.count) || 0
+      }))
     };
-
+    console.log(data);
     try {
       const response = await fetch("http://127.0.0.1:8000/add/", {
         method: "POST",
@@ -61,7 +69,7 @@ function DocHeader() {
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         setMessage("Data submitted successfully!");
         setMessageColor("success");
@@ -77,7 +85,7 @@ function DocHeader() {
       console.error("Error submitting data:", error);
     }
   };
-
+  
   const fetchDocumentNames = async () => {
     try {
         const response = await fetch("http://127.0.0.1:8000/get-document/", {
@@ -183,14 +191,14 @@ function DocHeader() {
                             <Checkbox
                               checked={row.original}
                               sx={{ transform: "scale(2)" }}
-                              onChange={(e) => handleTableChange(index, 'original', e.target.checked)}
+                              onChange={(e) => handleTableChange(index, 'original', e.target.checked?true:false)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Checkbox
                               sx={{ transform: "scale(2)" }}
                               checked={row.photocopy}
-                              onChange={(e) => handleTableChange(index, 'photocopy', e.target.checked)}
+                              onChange={(e) => handleTableChange(index, 'photocopy', e.target.checked)?true:false}
                             />
                           </TableCell>
                           <TableCell align="center">
