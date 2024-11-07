@@ -14,7 +14,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import SoftButton from "components/SoftButton";
 import './index.css';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function DocSearchHeader() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -22,7 +22,7 @@ function DocSearchHeader() {
   const [errorMessage, setErrorMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [studentData, setStudentData] = useState([]); // Initialize as empty array
-
+  const navigate = useNavigate();
   useEffect(() => {
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
@@ -94,7 +94,7 @@ function DocSearchHeader() {
                       <td align="center">{student.department}</td>
                       <td align="center">{student.email}</td>
                       <td align="center">
-                        <SoftButton variant="text" color="info" onClick={()=>{Navigate(`/edit-student/${student.admission_no}`)}}>View</SoftButton>
+                        <SoftButton variant="text" color="info" onClick={()=>navigate(`/edit-student/${student.admission_no}/`)}>View</SoftButton>
                       </td>
                     </tr>
                   ))}
