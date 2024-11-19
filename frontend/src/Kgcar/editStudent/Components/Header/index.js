@@ -11,10 +11,8 @@ import { Select, MenuItem } from "@mui/material";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import breakpoints from "assets/theme/base/breakpoints";
 import curved0 from "assets/images/curved-images/curved0.jpg";
-import Table from "Kgcar/NewEntry/Components/table";
 import PropTypes from "prop-types";
 import './index.css';
-
 
 function DocHeader({ columns, rows }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -33,8 +31,11 @@ function DocHeader({ columns, rows }) {
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("error");
+  const [documentData, setDocumentData] = useState([]);
+  const [isCheckboxVisible, setIsCheckboxVisible] = useState(false);
 
   const departmentOptions = ["CSE", "AIDS", "ECE", "CSBS", "IT", "MECH", "CYS", "AIML", "MBA"];
+
   useEffect(() => {
     const handleTabsOrientation = () => {
       setTabsOrientation(window.innerWidth < breakpoints.values.sm ? "vertical" : "horizontal");
@@ -55,7 +56,7 @@ function DocHeader({ columns, rows }) {
     const credentials = btoa(`${username}:${password}`);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/student/${studentId}`, {
+      const response = await fetch(`http://127.0.0.1:8000/edit/${studentId}`, {
         method: "GET",
         headers: {
           "Authorization": `Basic ${credentials}`,
@@ -64,7 +65,8 @@ function DocHeader({ columns, rows }) {
 
       if (response.ok) {
         const data = await response.json();
-        setStudentData(data);
+        setStudentData(data.student_info);
+        setDocumentData(data.documents);
         setMessage("Data loaded successfully!");
         setMessageColor("success");
       } else {
@@ -83,6 +85,7 @@ function DocHeader({ columns, rows }) {
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
+    setIsCheckboxVisible(!isCheckboxVisible);
   };
 
   const handleInputChange = (e) => {
@@ -92,8 +95,14 @@ function DocHeader({ columns, rows }) {
     });
   };
 
+  const handleDocumentChange = (index, field, value) => {
+    const updatedDocuments = [...documentData];
+    updatedDocuments[index][field] = value;
+    setDocumentData(updatedDocuments);
+  };
+
   return (
-    <SoftBox position="relative" >
+    <SoftBox position="relative">
       <DashboardNavbar absolute light />
       <SoftBox
         display="flex"
@@ -125,14 +134,12 @@ function DocHeader({ columns, rows }) {
           px: 2,
         }}
       >
-        <Grid container>
-          {/* Manually render each field */}
-          <Grid item xs={12} sm={6} md={3} >
+        <Grid container><Grid item xs={12} sm={6} md={3} >
             <SoftTypography variant="linear" className="heading">NAME</SoftTypography>
             {isEditing ? (
               <TextField name="name" value={studentData.name} onChange={handleInputChange} fullWidth />
             ) : (
-              <SoftTypography>{studentData.name}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.name}</SoftTypography>
             )}
           </Grid>
 
@@ -141,30 +148,30 @@ function DocHeader({ columns, rows }) {
             {isEditing ? (
               <TextField name="admission_no" value={studentData.admission_no} onChange={handleInputChange} fullWidth />
             ) : (
-              <SoftTypography>{studentData.admission_no}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.admission_no}</SoftTypography>
             )}
           </Grid>
 
           {/* Continue with each specific field in this manner */}
           {/* Department */}
           <Grid item xs={12} sm={6} md={3} >
-            <SoftTypography variant="linear"className="heading" >E-MAIL</SoftTypography>
+            <SoftTypography variant="linear" className="heading" >E-MAIL</SoftTypography>
             {isEditing ? (
               <TextField name="email" value={studentData.email} onChange={handleInputChange} fullWidth />
             ) : (
-              <SoftTypography>{studentData.email}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.email}</SoftTypography>
             )}
           </Grid>
 
           {/* Version - Non-editable */}
-          
+
 
           <Grid item xs={12} sm={6} md={3} >
             <SoftTypography variant="linear" className="heading">STUDENT NUMBER</SoftTypography>
             {isEditing ? (
               <TextField name="student_number" value={studentData.student_number} onChange={handleInputChange} fullWidth />
             ) : (
-              <SoftTypography>{studentData.student_number}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.student_number}</SoftTypography>
             )}
           </Grid>
 
@@ -173,7 +180,7 @@ function DocHeader({ columns, rows }) {
             {isEditing ? (
               <TextField name="parent_number" value={studentData.parent_number} onChange={handleInputChange} fullWidth />
             ) : (
-              <SoftTypography>{studentData.parent_number}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.parent_number}</SoftTypography>
             )}
           </Grid>
 
@@ -182,7 +189,7 @@ function DocHeader({ columns, rows }) {
             {isEditing ? (
               <TextField name="parent_name" value={studentData.parent_name} onChange={handleInputChange} fullWidth />
             ) : (
-              <SoftTypography>{studentData.parent_name}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.parent_name}</SoftTypography>
             )}
           </Grid>
 
@@ -196,13 +203,13 @@ function DocHeader({ columns, rows }) {
                 fullWidth
               >
                 {departmentOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
+                  <MenuItem key={option} value={option} fontSize="1rem">
                     {option}
                   </MenuItem>
                 ))}
               </Select>
             ) : (
-              <SoftTypography>{studentData.department}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.department}</SoftTypography>
             )}
           </Grid>
 
@@ -224,21 +231,127 @@ function DocHeader({ columns, rows }) {
                 <MenuItem value={1}>Government</MenuItem>
               </Select>
             ) : (
-              <SoftTypography>{studentData.quota ? "Management" : "Government"}</SoftTypography>
+              <SoftTypography fontSize="1rem">{studentData.quota ? "Management" : "Government"}</SoftTypography>
             )}
           </Grid>
 
           <Grid item xs={12} sm={6} md={3} >
             <SoftTypography variant="linear" className="heading">VERSION</SoftTypography>
-            <SoftTypography>{studentData.ver}</SoftTypography>
+            <SoftTypography fontSize="1rem">{studentData.ver}</SoftTypography>
           </Grid>
 
-          
+
+
           <SoftBox py={3} mt={7}>
-            <Table columns={columns} rows={rows} />
+            <div className="table-responsive">
+              <table className="table align-items-center mb-0">
+                <thead className="table-head-style">
+                  <tr className="table-header-style">
+                    <th className="heading-table">S.No</th>
+                    <th className="heading-table">Documents</th>
+                    <th className="heading-table">Original</th>
+                    <th className="heading-table">Photocopy</th>
+                    <th className="heading-table">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {documentData.map((document, index) => (
+                    <tr className="table-top" key={index}>
+                      {/* Serial number */}
+                      <td>
+                        <div className="text-align-center">{index + 1}</div>
+                      </td>
+                      {/* Document name */}
+                      <td className="text-align-center">
+                        <div className="document-name">{document.document_name}</div>
+                      </td>
+                      {/* Original checkbox */}
+                      <td className="text-align-center">
+                        {isEditing ? (
+                          <input
+                            type="checkbox"
+                            name={`original-${index}`}
+                            checked={document.original}
+                            onChange={(e) => handleDocumentChange(index, "original", e.target.checked)}
+                            style={{ width: "20px", height: "20px" }}
+                          />
+                        ) : (
+                          <input
+                            type="checkbox"
+                            checked={document.original}
+                            disabled
+                            style={{ width: "20px", height: "20px" }}
+                          />
+                        )}
+                      </td>
+                      {/* Photocopy checkbox */}
+                      <td className="text-align-center">
+                        {isEditing ? (
+                          <input
+                            type="checkbox"
+                            name={`photocopy-${index}`}
+                            checked={document.photocopy}
+                            onChange={(e) => handleDocumentChange(index, "photocopy", e.target.checked)}
+                            style={{ width: "20px", height: "20px" }}
+                          />
+                        ) : (
+                          <input
+                            type="checkbox"
+                            checked={document.photocopy}
+                            disabled
+                            style={{ width: "20px", height: "20px" }}
+                          />
+                        )}
+                      </td>
+                      {/* Count input */}
+                      <td className="text-align-center">
+                        {isEditing ? (
+                          <input
+                            type="number"
+                            name={`count-${index}`}
+                            min="0"
+                            className="form-control"
+                            value={document.count} // Ensure the count is always a number
+                            onChange={(e) => handleDocumentChange(index, "count", e.target.value)}
+                            style={{ width: "80px", padding: "10px" }}
+                          />
+                        ) : (
+                          <div className="text-align-center">
+                            {document.count === 0 ? (
+                              document.photocopy ? (
+                                // If photocopy is true, set count to 1
+                                1
+                              ) : (
+                                document.count
+                              )
+                            ) : (
+                              document.count
+                            )}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </SoftBox>
 
           <Grid container justifyContent="flex-end" sx={{ mt: 4 }}>
+            {isCheckboxVisible && (
+              <div className="form-check">
+                <label className="form-check-label" htmlFor="submit-checkbox" style={{ marginRight: "20px" }}>
+                  Finally Confirm your changes
+                </label>
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="submit-checkbox"
+                  style={{ marginRight: "20px" }}
+                  // Add any other logic you need here for the checkbox
+                />
+              </div>
+            )}
             <Button variant="contained" onClick={handleEditClick}>
               {isEditing ? "Save" : "Edit"}
             </Button>
@@ -248,26 +361,9 @@ function DocHeader({ columns, rows }) {
         <Snackbar
           open={showMessage}
           onClose={() => setShowMessage(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          <Alert
-            severity={messageColor === "error" ? "error" : "success"}
-            sx={{
-              backgroundColor: messageColor === "error" ? "#d32f2f" : "#388e3c",
-              color: "#fff",
-              fontWeight: "bold",
-              boxShadow: 3,
-              borderRadius: 2,
-              padding: "0.75rem 1.5rem",
-              "& .MuiAlert-icon": {
-                fontSize: "1.5rem",
-                color: "#fff",
-              },
-            }}
-          >
-            {message}
-          </Alert>
+          <Alert severity={messageColor}>{message}</Alert>
         </Snackbar>
       </Card>
     </SoftBox>
