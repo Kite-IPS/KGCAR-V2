@@ -56,7 +56,7 @@ function DocHeader({ columns, rows }) {
     const credentials = btoa(`${username}:${password}`);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/edit/${studentId}`, {
+      const response = await fetch(`http://127.0.0.1:8000/edit/${studentId}/`, {
         method: "GET",
         headers: {
           "Authorization": `Basic ${credentials}`,
@@ -87,7 +87,13 @@ function DocHeader({ columns, rows }) {
     setIsEditing(!isEditing);
     setIsCheckboxVisible(!isCheckboxVisible);
   };
-
+  const handleCheckboxChange = (event) => {
+    setStudentData((prevData) => ({
+      ...prevData,
+      lock: event.target.checked,
+    }));
+  };
+  
   const handleInputChange = (e) => {
     setStudentData({
       ...studentData,
@@ -95,6 +101,46 @@ function DocHeader({ columns, rows }) {
     });
   };
 
+  const handleSubmit = async () => {
+    const username = "admin";
+    const password = "admin";
+    const credentials = btoa(`${username}:${password}`);
+  
+    try {
+      const studentId = window.location.pathname.split("/").pop();
+      const payload = {
+        student_info: studentData,
+        documents: documentData,
+      };
+  
+      const response = await fetch(`http://127.0.0.1:8000/edit/${studentId}/`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Basic ${credentials}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        setMessage("Data saved successfully!");
+        setMessageColor("success");
+        setIsEditing(false); // Exit edit mode after successful save
+      } else {
+        setMessage("Failed to save data.");
+        setMessageColor("error");
+      }
+    } catch (error) {
+      setMessage("Error saving data.");
+      setMessageColor("error");
+      console.error("Error submitting data:", error);
+    }
+  
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 3000);
+  };
+  
   const handleDocumentChange = (index, field, value) => {
     const updatedDocuments = [...documentData];
     updatedDocuments[index][field] = value;
@@ -135,13 +181,13 @@ function DocHeader({ columns, rows }) {
         }}
       >
         <Grid container><Grid item xs={12} sm={6} md={3} >
-            <SoftTypography variant="linear" className="heading">NAME</SoftTypography>
-            {isEditing ? (
-              <TextField name="name" value={studentData.name} onChange={handleInputChange} fullWidth />
-            ) : (
-              <SoftTypography fontSize="1rem">{studentData.name}</SoftTypography>
-            )}
-          </Grid>
+          <SoftTypography variant="linear" className="heading">NAME</SoftTypography>
+          {isEditing ? (
+            <TextField name="name" value={studentData.name} onChange={handleInputChange} fullWidth />
+          ) : (
+            <SoftTypography fontSize="1rem">{studentData.name}</SoftTypography>
+          )}
+        </Grid>
 
           <Grid item xs={12} sm={6} md={3} >
             <SoftTypography variant="linear" className="heading">ADMISSION NO</SoftTypography>
@@ -338,24 +384,42 @@ function DocHeader({ columns, rows }) {
           </SoftBox>
 
           <Grid container justifyContent="flex-end" sx={{ mt: 4 }}>
-            {isCheckboxVisible && (
-              <div className="form-check">
-                <label className="form-check-label" htmlFor="submit-checkbox" style={{ marginRight: "20px" }}>
-                  Finally Confirm your changes
-                </label>
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="submit-checkbox"
-                  style={{ marginRight: "20px" }}
-                  // Add any other logic you need here for the checkbox
-                />
-              </div>
+            {isEditing ? (
+              <>
+                
+                <div className="form-check">
+                  <label htmlFor="lock-checkbox" className="form-check-label" style={{ marginRight: "20px" }}>
+                    Lock changes
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="lock-checkbox"
+                    checked={studentData.lock}
+                    onChange={handleCheckboxChange}
+                    style={{margin: "0 20px 0 0", height: "15px", width: "15px"}}
+                  />
+                </div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                  sx={{ marginRight: 2 }}
+                >
+                  Save
+                </Button>
+              </>
+            ) : (
+              /* Edit Button */
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleEditClick}
+              >
+                Edit
+              </Button>
             )}
-            <Button variant="contained" onClick={handleEditClick}>
-              {isEditing ? "Save" : "Edit"}
-            </Button>
           </Grid>
+
         </Grid>
 
         <Snackbar

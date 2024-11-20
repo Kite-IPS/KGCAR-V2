@@ -106,7 +106,6 @@ function KgcarDefaultNavbar({ transparent, light, action }) {
                 variant="gradient"
                 color={action.color ? action.color : "info"}
                 size="small"
-                circular
               >
                 {action.label}
               </SoftButton>
@@ -121,7 +120,6 @@ function KgcarDefaultNavbar({ transparent, light, action }) {
                 variant="gradient"
                 color={action.color ? action.color : "info"}
                 size="small"
-                circular
               >
                 {action.label}
               </SoftButton>
