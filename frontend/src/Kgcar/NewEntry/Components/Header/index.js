@@ -50,7 +50,7 @@ function DocHeader() {
       contact1: inputFields.textField4,
       contact2: inputFields.textField5,
       email: inputFields.textField6,
-      quota: dropdown2 === "Management Quote" ? 1 : 0,
+      quota: dropdown2 === "Management Quota" ? 1 : 0,
       ver: 1,
       files: tableData.map(row => ({
         name: row.document,
@@ -157,7 +157,7 @@ function DocHeader() {
                 value={inputFields[`textField${index + 1}`]} onChange={handleInputChange} />
             </Grid>
           ))}
-          {["Department", "Quote"].map((label, index) => (
+          {["Department", "Quota"].map((label, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
               <SoftTypography variant="body2">{label}</SoftTypography>
               <Select value={index === 0 ? dropdown1 : dropdown2}
@@ -168,7 +168,7 @@ function DocHeader() {
                   ? ["CSE", "AIDS", "IT", "ECE", "CSBS", "MECH", "CYS", "AIML", "MBA"].map((opt, i) => (
                     <MenuItem value={opt} key={i}>{opt}</MenuItem>
                   ))
-                  : ["Management Quote", "Government Quote"].map((opt, i) => (
+                  : ["Management Quota", "Government Quota"].map((opt, i) => (
                     <MenuItem value={opt} key={i}>{opt}</MenuItem>
                   ))}
               </Select>
