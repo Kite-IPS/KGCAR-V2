@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -100,6 +101,9 @@ function DocSearchHeader() {
                 }}
               />
             </SoftBox>
+          </Grid>
+          <Grid>
+            <Button></Button>
           </Grid>
         </Grid>
       </Card>

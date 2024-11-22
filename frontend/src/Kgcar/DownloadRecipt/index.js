@@ -1,20 +1,46 @@
-// @mui/material components
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import './index.css';
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-
-// Soft UI Dashboard React examples
+import React, { useEffect, useState } from "react";
+import { Card, Button } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import KgcarFooter from "Kgcar/Footer";
-
-// Custom Components
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
 import DocSearchHeader from "./Components/Header";
+import axios from "axios";
+import './index.css';
 
 function KgcarDownloadTables() {
+  const [students, setStudents] = useState([]);
+
+  // Fetch data from the server
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/download/",{
+          method: "GET",
+          headers: {
+            "Authorization": "Basic " + btoa("admin:admin"),
+            "Content-Type": "application/json",
+          },
+        });
+        setStudents(response.data.locked_students);
+      } catch (error) {
+        console.error("Error fetching students data:", error);
+      }
+    };
+    fetchStudents();
+  }, []);
+
+  // Handle the download button click
+  const handleDownload = async (admissionNo) => {
+    try {
+      const response = await axios.post("http://your-backend-url/download", { admission_no: admissionNo });
+      // Handle file download logic here
+      console.log("File download response:", response.data);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+
   return (
     <DashboardLayout>
       <DocSearchHeader />
@@ -25,7 +51,6 @@ function KgcarDownloadTables() {
               <SoftTypography variant="h6">Student Table</SoftTypography>
             </SoftBox>
             <SoftBox>
-
               <div className="table-responsive">
                 <table className="table align-items-center mb-0">
                   <thead className="table-head-style">
@@ -38,117 +63,41 @@ function KgcarDownloadTables() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="table-top">
-                      <td>
-                        <div className="student-name">Sample</div>
-                      </td>
-                      <td>
-                        <div className="adm-no text-align-center">12341</div>
-                      </td>
-                      <td>
-                        <div className="department text-align-center">aids</div>
-                      </td>
-                      <td>
-                        <div className="version text-align-center">2</div>
-                      </td>
-                      <td className="text-align-center">
-                        <button className="download-button">Download</button>
-                      </td>
-                    </tr>
-
-                    <tr className="table-top">
-                      <td>
-                        <div className="student-name">Sample</div>
-                      </td>
-                      <td>
-                        <div className="adm-no text-align-center">12341</div>
-                      </td>
-                      <td>
-                        <div className="department text-align-center">aids</div>
-                      </td>
-                      <td>
-                        <div className="version text-align-center">2</div>
-                      </td>
-                      <td className="text-align-center">
-                        <button className="download-button">Download</button>
-                      </td>
-                    </tr>
-
-                    <tr className="table-top">
-                      <td>
-                        <div className="student-name">Sample</div>
-                      </td>
-                      <td>
-                        <div className="adm-no text-align-center">12341</div>
-                      </td>
-                      <td>
-                        <div className="department text-align-center">aids</div>
-                      </td>
-                      <td>
-                        <div className="version text-align-center">2</div>
-                      </td>
-                      <td className="text-align-center">
-                        <button className="download-button">Download</button>
-                      </td>
-                    </tr>
-
-                    <tr className="table-top">
-                      <td>
-                        <div className="student-name">Sample</div>
-                      </td>
-                      <td>
-                        <div className="adm-no text-align-center">12341</div>
-                      </td>
-                      <td>
-                        <div className="department text-align-center">aids</div>
-                      </td>
-                      <td>
-                        <div className="version text-align-center">2</div>
-                      </td>
-                      <td className="text-align-center">
-                        <button className="download-button">Download</button>
-                      </td>
-                    </tr>
-
-                    <tr className="table-top">
-                      <td>
-                        <div className="student-name">Sample</div>
-                      </td>
-                      <td>
-                        <div className="adm-no text-align-center">12341</div>
-                      </td>
-                      <td>
-                        <div className="department text-align-center">aids</div>
-                      </td>
-                      <td>
-                        <div className="version text-align-center">2</div>
-                      </td>
-                      <td className="text-align-center">
-                        <button className="download-button">Download</button>
-                      </td>
-                    </tr>
-
-                    <tr className="table-top">
-                      <td>
-                        <div className="student-name">Sample</div>
-                      </td>
-                      <td>
-                        <div className="adm-no text-align-center">12341</div>
-                      </td>
-                      <td>
-                        <div className="department text-align-center">aids</div>
-                      </td>
-                      <td>
-                        <div className="version text-align-center">2</div>
-                      </td>
-                      <td className="text-align-center">
-                        <button className="download-button">Download</button>
-                      </td>
-                    </tr>
+                    {students.map((student, index) => (
+                      <tr key={index} className="table-top">
+                        <td>
+                          <div className="student-name text-align-center text-d">
+                            {student.name}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="adm-no text-align-center text-d">
+                            {student.admission_no}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="department text-align-center text-d">
+                            {student.department}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="version text-align-center text-d">
+                            {student.version_count}
+                          </div>
+                        </td>
+                        <td className="text-align-center">
+                          <button
+                            className="download-button"
+                            onClick={() => handleDownload(student.admission_no)}
+                          >
+                            Download
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
-
             </SoftBox>
           </Card>
         </SoftBox>

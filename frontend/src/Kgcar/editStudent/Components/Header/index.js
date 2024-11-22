@@ -13,7 +13,7 @@ import breakpoints from "assets/theme/base/breakpoints";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import PropTypes from "prop-types";
 import './index.css';
-
+import { useNavigate } from "react-router-dom";   
 function DocHeader({ columns, rows }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [studentData, setStudentData] = useState({
@@ -33,6 +33,8 @@ function DocHeader({ columns, rows }) {
   const [messageColor, setMessageColor] = useState("error");
   const [documentData, setDocumentData] = useState([]);
   const [isCheckboxVisible, setIsCheckboxVisible] = useState(false);
+  const navigate = useNavigate();
+
 
   const departmentOptions = ["CSE", "AIDS", "ECE", "CSBS", "IT", "MECH", "CYS", "AIML", "MBA"];
 
@@ -105,7 +107,7 @@ function DocHeader({ columns, rows }) {
     const username = "admin";
     const password = "admin";
     const credentials = btoa(`${username}:${password}`);
-  
+
     try {
       const studentId = window.location.pathname.split("/").pop();
       const payload = {
@@ -126,6 +128,7 @@ function DocHeader({ columns, rows }) {
         const result = await response.json();
         setMessage("Data saved successfully!");
         setMessageColor("success");
+        navigate(`/search-students`);
         setIsEditing(false); // Exit edit mode after successful save
       } else {
         setMessage("Failed to save data.");
@@ -146,6 +149,7 @@ function DocHeader({ columns, rows }) {
     updatedDocuments[index][field] = value;
     setDocumentData(updatedDocuments);
   };
+  
 
   return (
     <SoftBox position="relative">
@@ -353,19 +357,19 @@ function DocHeader({ columns, rows }) {
                       <td className="text-align-center">
                         {isEditing ? (
                           <input
-                            type="number"
-                            name={`count-${index}`}
-                            min="0"
-                            className="form-control"
-                            value={document.count} // Ensure the count is always a number
-                            onChange={(e) => handleDocumentChange(index, "count", e.target.value)}
-                            style={{ width: "80px", padding: "10px" }}
-                          />
+                          type="number"
+                          name={`count-${index}`}
+                          min="0"
+                          className="form-control"
+                          value={document.count || (document.photocopy ? 1 : 0)} 
+                          onChange={(e) => handleDocumentChange(index, "count", parseInt(e.target.value, 10) || 0)}
+                          style={{ width: "80px", padding: "10px" }}
+                        />
+                        
                         ) : (
                           <div className="text-align-center">
                             {document.count === 0 ? (
                               document.photocopy ? (
-                                // If photocopy is true, set count to 1
                                 1
                               ) : (
                                 document.count
@@ -412,7 +416,7 @@ function DocHeader({ columns, rows }) {
               /* Edit Button */
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={handleEditClick}
               >
                 Edit
