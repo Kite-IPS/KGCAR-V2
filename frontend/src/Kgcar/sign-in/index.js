@@ -25,31 +25,31 @@ function KgcarSignIn() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    
     // Validation
     if (!userId || !password) {
       setError("Both fields are required!");
       return;
     }
+    navigate("/newentry");
+    // try {
+    //   // Send login data to the backend
+    //   // const response = await axios.post("http://127.0.0.1:8000/login", {
+    //   //   userId,
+    //   //   password,
+    //   // });
 
-    try {
-      // Send login data to the backend
-      const response = await axios.post("http://127.0.0.1:8000/login", {
-        userId,
-        password,
-      });
-
-      if (response.data.success) {
-        setSuccess(true);
-        setTimeout(() => {
-          navigate("/newentry"); // Navigate to new entry page
-        }, 1000);
-      } else {
-        setError("Authentication failed. Please check your credentials.");
-      }
-    } catch (err) {
-      setError("An error occurred while logging in. Please try again.");
-    }
+    //   if (response.data.success) {
+    //     setSuccess(true);
+    //     setTimeout(() => {
+    //       // Navigate to new entry page
+    //     }, 1000);
+    //   } else {
+    //     setError("Authentication failed. Please check your credentials.");
+    //   }
+    // } catch (err) {
+    //   setError("An error occurred while logging in. Please try again.");
+    // }
   };
 
   return (

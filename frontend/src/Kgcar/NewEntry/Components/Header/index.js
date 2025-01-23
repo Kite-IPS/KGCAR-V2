@@ -8,6 +8,7 @@ import SoftTypography from "components/SoftTypography";
 import SoftBox from "components/SoftBox";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import curved0 from "assets/images/curved-images/curved5.jpg";
+import documentData from '../../../../Data/DocumentData.json';
 
 function DocHeader() {
   const [inputFields, setInputFields] = useState({
@@ -22,6 +23,15 @@ function DocHeader() {
   const [showTable, setShowTable] = useState(false); // Controls table visibility
   const [tableData, setTableData] = useState([]);
 
+
+  const setResetfields = () => {
+    setInputFields({
+      textField1: "", textField2: "", textField3: "",
+      textField4: "", textField5: "", textField6: ""
+    });
+    setDropdown1("");
+    setDropdown2("");
+  }
   const handleInputChange = (event) => {
     setInputFields({ ...inputFields, [event.target.name]: event.target.value });
   };
@@ -35,102 +45,50 @@ function DocHeader() {
   const handleSubmit = async () => {
     // Check if all fields are filled
     if (!Object.values(inputFields).every(field => field) || !dropdown1 || !dropdown2) {
-      setMessage("Please fill all fields.");
+      setMessage("Please fill in all required fields.");
       setMessageColor("error");
       setShowMessage(true);
       return;
     }
-  
+
     // Prepare the data from the input fields and dropdowns
-    const data = {
-      name_stu: inputFields.textField1,
-      receipt: inputFields.textField2,
-      name_prnt: inputFields.textField3,
-      dept: dropdown1,
-      contact1: inputFields.textField4,
-      contact2: inputFields.textField5,
-      email: inputFields.textField6,
-      quota: dropdown2 === "Management Quota" ? 1 : 0,
-      ver: 1,
-      files: tableData.map(row => ({
-        name: row.document,
-        original: row.original,
-        copy: row.photocopy,
-        count: parseInt(row.count) || 0
-      }))
-    };
-  
-    try {
-      const response = await fetch("http://127.0.0.1:8000/add/", {
-        method: "POST",
-        headers: {
-          "Authorization": "Basic " + btoa("admin:admin"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-  
-      if (response.ok) {
-        setMessage("Data submitted successfully!");
-        setMessageColor("success");
-        
-        // Reset all input fields and table data
-        setInputFields({
-          textField1: "", textField2: "", textField3: "",
-          textField4: "", textField5: "", textField6: ""
-        });
-        setDropdown1("");
-        setDropdown2("");
-        setTableData([]);
-        setShowTable(false);  // Optionally hide the table if you want
-      } else {
-        setMessage("Error submitting data.");
-        setMessageColor("error");
-      }
-      setShowMessage(true);
-    } catch (error) {
-      setMessage("Error submitting data.");
-      setMessageColor("error");
-      setShowMessage(true);
-      console.error("Error submitting data:", error);
-    }
+    setResetfields();
+
+    setMessage("Data collected successfully.");
+    setMessageColor("success");
+    setShowMessage(true);
   };
-  
+
   const fetchDocumentNames = async () => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/get-document/", {
-            headers: {
-                "Authorization": "Basic " + btoa("admin:admin"),
-                "Content-Type": "application/json",
-            },
-        });
-        
-        if (response.ok) {
-            const documents = await response.json();
-            // Map only the names from the response to the table data
-            const updatedTableData = documents.map((doc, index) => ({
-                sNo: index + 1,
-                document: doc.name,  // Extract just the name from each document object
-                date: new Date().toISOString().split("T")[0],
-                original: false,
-                photocopy: false,
-                count: ""
-            }));
-            setTableData(updatedTableData);
-            setShowTable(true);
-        } else {
-            const errorData = await response.json();
-            setMessage(errorData.error || "Failed to fetch document names");
-            setMessageColor("error");
-            setShowMessage(true);
-        }
+      // const response = await fetch("http://127.0.0.1:8000/get-document/", {
+      //     headers: {
+      //         "Authorization": "Basic " + btoa("admin:admin"),
+      //         "Content-Type": "application/json",
+      //     },
+      // });
+      console.log(documentData);
+
+
+      // Map only the names from the response to the table data
+      const updatedTableData = documentData.documentData.map((doc) => ({
+        sNo: doc.sNo,
+        document: doc.document,  // Extract just the name from each document object
+        date: new Date().toISOString().split("T")[0],
+        original: false,
+        photocopy: false,
+        count: ""
+      }));
+      setTableData(updatedTableData);
+      setShowTable(true);
+
     } catch (error) {
-        setMessage("Error fetching document names");
-        setMessageColor("error");
-        setShowMessage(true);
-        console.error("Error:", error);
+      setMessage("Error fetching document names");
+      setMessageColor("error");
+      setShowMessage(true);
+      console.error("Error:", error);
     }
-};
+  };
 
   const handleButtonClick = () => {
     if (showTable) {
@@ -201,14 +159,14 @@ function DocHeader() {
                             <Checkbox
                               checked={row.original}
                               sx={{ transform: "scale(2)" }}
-                              onChange={(e) => handleTableChange(index, 'original', e.target.checked?true:false)}
+                              onChange={(e) => handleTableChange(index, 'original', e.target.checked ? true : false)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Checkbox
                               sx={{ transform: "scale(2)" }}
                               checked={row.photocopy}
-                              onChange={(e) => handleTableChange(index, 'photocopy', e.target.checked)?true:false}
+                              onChange={(e) => handleTableChange(index, 'photocopy', e.target.checked) ? true : false}
                             />
                           </TableCell>
                           <TableCell align="center">
@@ -218,9 +176,9 @@ function DocHeader() {
                                 value={row.count || 1}
                                 onChange={(e) => handleTableChange(index, 'count', e.target.value)}
                               />
-                            
+
                             ) : (
-                              <div style={{ border: "1px solid #ccc",margin: "auto", borderRadius: "4px", textAlign: "center", height: "40px", width: "200px" }}>
+                              <div style={{ border: "1px solid #ccc", margin: "auto", borderRadius: "4px", textAlign: "center", height: "40px", width: "200px" }}>
                                 {row.count}
                               </div>
                             )}

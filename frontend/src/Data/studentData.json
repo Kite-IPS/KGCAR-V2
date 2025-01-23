@@ -1,0 +1,53 @@
+{
+    "searchStudentData": [
+        {
+            "name": "Arun",
+            "admission_no": "001",
+            "department": "CSE",
+            "ver": 1
+        },
+        {
+            "name": "Alex",
+            "admission_no": "002",
+            "department": "AIDS",
+            "ver": 1
+        },
+        {
+            "name": "Vinoth",
+            "admission_no": "003",
+            "department": "MECH",
+            "ver": 1
+        },
+        {
+            "name": "Muthu",
+            "admission_no": "004",
+            "department": "CSBS",
+            "ver": 1
+        },
+        {
+            "name": "Raja",
+            "admission_no": "005",
+            "department": "ECE",
+            "ver": 1
+        },
+        {
+            "name": "Siva",
+            "admission_no": "006",
+            "department": "IT",
+            "ver": 1
+        },
+        {
+            "name": "Raj",
+            "admission_no": "007",
+            "department": "CYS",
+            "ver": 1
+        },
+        {
+            "name": "Ravi",
+            "admission_no": "008",
+            "department": "AIML",
+            "ver": 1
+        }
+    ]
+    
+}

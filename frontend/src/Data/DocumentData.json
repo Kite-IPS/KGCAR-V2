@@ -1,0 +1,74 @@
+{
+    "documentData": [
+        {
+            "sNo": 1,
+            "document": "Document 1",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 2,
+            "document": "Document 2",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 3,
+            "document": "Document 3",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 4,
+            "document": "Document 4",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 5,
+            "document": "Document 5",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 6,
+            "document": "Document 6",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 7,
+            "document": "Document 7",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 8,
+            "document": "Document 8",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },{
+            "sNo": 9,
+            "document": "Document 9",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        },
+        {
+            "sNo": 10,
+            "document": "Document 10",
+            "original": false,
+            "photocopy": false,
+            "count": 0
+        }
+        
+    ]
+}

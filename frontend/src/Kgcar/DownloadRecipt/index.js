@@ -1,40 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button } from "@mui/material";
+import { Card } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import KgcarFooter from "Kgcar/Footer";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import DocSearchHeader from "./Components/Header";
 import axios from "axios";
-import './index.css';
+import studentData from "../../Data/studentData.json";
+import "./index.css";
 
 function KgcarDownloadTables() {
   const [students, setStudents] = useState([]);
 
-  // Fetch data from the server
+  // Load JSON data
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/download/",{
-          method: "GET",
-          headers: {
-            "Authorization": "Basic " + btoa("admin:admin"),
-            "Content-Type": "application/json",
-          },
-        });
-        setStudents(response.data.locked_students);
-      } catch (error) {
-        console.error("Error fetching students data:", error);
-      }
+    const fetchStudentData = () => {
+      setStudents(studentData.searchStudentData);
     };
-    fetchStudents();
+    fetchStudentData();
   }, []);
 
   // Handle the download button click
   const handleDownload = async (admissionNo) => {
     try {
-      const response = await axios.post("http://your-backend-url/download", { admission_no: admissionNo });
-      // Handle file download logic here
+      const response = await axios.post("http://127.0.0.1:8000/download/", { admission_no: admissionNo });
+      // Handle file download logic
       console.log("File download response:", response.data);
     } catch (error) {
       console.error("Error downloading file:", error);
@@ -63,8 +53,8 @@ function KgcarDownloadTables() {
                     </tr>
                   </thead>
                   <tbody>
-                    {students.map((student, index) => (
-                      <tr key={index} className="table-top">
+                    {students.slice(-7).map((student) => (
+                      <tr key={student.admission_no} className="table-top">
                         <td>
                           <div className="student-name text-align-center text-d">
                             {student.name}
@@ -82,7 +72,7 @@ function KgcarDownloadTables() {
                         </td>
                         <td>
                           <div className="version text-align-center text-d">
-                            {student.version_count}
+                            {student.ver}
                           </div>
                         </td>
                         <td className="text-align-center">

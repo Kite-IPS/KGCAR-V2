@@ -7,47 +7,20 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
+import searchStudentData from "../../../../Data/studentData.json";
 
 function Table() {
   const [students, setStudents] = useState([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/student-info/", {
-          method: "GET",
-          headers: {
-            Authorization: "Basic " + btoa("admin:admin"), // Replace with actual credentials
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-        console.log(data);
-        setStudents(data.students.slice(-7)); // Get last 7 students from the `students` array
-      } catch (err) {
-        console.error("Error fetching students:", err); // Logs the error for debugging
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStudents();
+    // Extract student data from JSON and set the last 7 students
+    if (Array.isArray(searchStudentData.searchStudentData)) {
+      setStudents(searchStudentData.searchStudentData.slice(-7));
+    } else {
+      console.error("Invalid student data format");
+    }
   }, []);
-
-  if (loading) return <SoftTypography align="center">Loading...</SoftTypography>;
-
-  if (error || students.length === 0) {
-    return (
-      <SoftBox textAlign="center" mt={5}>
-        <SoftTypography>No student has been added</SoftTypography>
-      </SoftBox>
-    );
-  }
 
   const columns = [
     { name: "Student Name", align: "center" },
